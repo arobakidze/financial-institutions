@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class Account {
 
-    private String owner;
+    private String accountOwner;
     private BigDecimal balance;
     private Transaction[] transactions;
     private Card card;
