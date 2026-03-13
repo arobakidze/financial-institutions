@@ -1,4 +1,4 @@
-package institutions;
+package institutions;   // Employee working at a financial institution
 
 public class Employee {
 
