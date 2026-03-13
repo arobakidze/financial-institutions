@@ -1,4 +1,4 @@
-package accounts;
+package accounts;  // Card linked to a bank account
 
 import java.time.LocalDate;
 
