@@ -11,6 +11,11 @@ public class InsuranceCompany extends FinancialInstitution {
         this.insuranceType = insuranceType;
     }
 
+    @Override
+    public String getInstitutionType() {
+        return "Insurance Company";
+    }
+
     public String getInsuranceType() {
         return insuranceType;
     }

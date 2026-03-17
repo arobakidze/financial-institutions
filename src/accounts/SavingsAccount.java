@@ -1,7 +1,6 @@
 package accounts;
 
 import transactions.Transaction;
-
 import java.math.BigDecimal;
 
 public class SavingsAccount extends Account {
@@ -11,6 +10,11 @@ public class SavingsAccount extends Account {
     public SavingsAccount(String owner, BigDecimal balance, Transaction[] transactions, Card card, BigDecimal interestRate) {
         super(owner, balance, transactions, card);
         this.interestRate = interestRate;
+    }
+
+    @Override
+    public String getAccountType() {
+        return "Savings Account";
     }
 
     public BigDecimal getInterestRate() {

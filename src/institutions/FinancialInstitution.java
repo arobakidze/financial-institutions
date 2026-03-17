@@ -2,7 +2,7 @@ package institutions;
 
 import client.Address;
 
-public class FinancialInstitution {
+public abstract class FinancialInstitution {
 
     private String name;
     private Address address;
@@ -16,6 +16,12 @@ public class FinancialInstitution {
         this.name = name;
         this.address = address;
         totalInstitutions++;
+    }
+
+    public abstract String getInstitutionType();
+
+    protected String getBasicInfo() {
+        return "Name: " + name + ", City: " + address.getCity();
     }
 
     public static int getTotalInstitutions() {

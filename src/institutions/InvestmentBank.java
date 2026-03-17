@@ -3,7 +3,7 @@ package institutions;
 import client.Address;
 import client.Customer;
 
-public class InvestmentBank extends institutions.Bank {
+public class InvestmentBank extends Bank {
 
     private String specialization;
 
@@ -11,6 +11,12 @@ public class InvestmentBank extends institutions.Bank {
         super(name, address, bankCode, customers, employees);
         this.specialization = specialization;
     }
+
+    @Override
+    public String getInstitutionType() {
+        return "Investment Bank";
+    }
+
     public String getSpecialization() {
         return specialization;
     }

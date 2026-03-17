@@ -1,9 +1,10 @@
 package loans;
 
+import base.FinancialProduct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Loan {
+public class Loan extends FinancialProduct {
 
     private BigDecimal loanAmount;
     private BigDecimal interestRate;
@@ -11,10 +12,16 @@ public class Loan {
     private int durationMonths;
 
     public Loan(BigDecimal loanAmount, BigDecimal interestRate, LocalDate startDate, int durationMonths) {
+        super("Loan");
         this.loanAmount = loanAmount;
         this.interestRate = interestRate;
         this.startDate = startDate;
         this.durationMonths = durationMonths;
+    }
+
+    @Override
+    public String getProductType() {
+        return "Loan";
     }
 
     public BigDecimal getLoanAmount() {

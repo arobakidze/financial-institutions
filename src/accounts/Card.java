@@ -1,17 +1,24 @@
-package accounts;  // Card linked to a bank account
+package accounts;
 
+import base.FinancialProduct;
 import java.time.LocalDate;
 
-public class Card {
+public class Card extends FinancialProduct {
 
     private String cardNumber;
     private LocalDate expiryDate;
     private String cardType;
 
     public Card(String cardNumber, LocalDate expiryDate, String cardType) {
+        super("Card");
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
         this.cardType = cardType;
+    }
+
+    @Override
+    public String getProductType() {
+        return cardType + " Card";
     }
 
     public String getCardNumber() {

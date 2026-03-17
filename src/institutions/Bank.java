@@ -16,6 +16,11 @@ public class Bank extends FinancialInstitution {
         this.employees = employees;
     }
 
+    @Override
+    public String getInstitutionType() {
+        return "Bank";
+    }
+
     public String getBankCode() {
         return bankCode;
     }

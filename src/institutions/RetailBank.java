@@ -14,6 +14,11 @@ public class RetailBank extends Bank {
         this.branches = branches;
     }
 
+    @Override
+    public String getInstitutionType() {
+        return "Retail Bank";
+    }
+
     public int getNumberOfBranches() {
         return numberOfBranches;
     }

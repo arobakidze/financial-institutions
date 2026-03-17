@@ -2,7 +2,6 @@ package accounts;
 
 import loans.Loan;
 import transactions.Transaction;
-
 import java.math.BigDecimal;
 
 public class LoanAccount extends Account {
@@ -12,6 +11,11 @@ public class LoanAccount extends Account {
     public LoanAccount(String owner, BigDecimal balance, Transaction[] transactions, Card card, Loan loan) {
         super(owner, balance, transactions, card);
         this.loan = loan;
+    }
+
+    @Override
+    public String getAccountType() {
+        return "Loan Account";
     }
 
     public Loan getLoan() {

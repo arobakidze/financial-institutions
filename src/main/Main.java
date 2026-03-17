@@ -10,16 +10,16 @@ import client.Passport;
 import institutions.Bank;
 import institutions.Branch;
 import institutions.Employee;
+import institutions.FinancialInstitution;
 import institutions.HedgeFund;
 import institutions.InsuranceCompany;
 import institutions.InvestmentBank;
 import institutions.RetailBank;
-import institutions.FinancialInstitution;
 import loans.Loan;
-import loans.LoanService;
 import sector.FinancialSector;
+import services.AccountService;
+import services.LoanService;
 import transactions.Transaction;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -44,9 +44,10 @@ public class Main {
 
         Loan loan = new Loan(new BigDecimal("15000.00"), new BigDecimal("5.5"), LocalDate.of(2025, 1, 1), 24);
 
-        Account account = new Account("Avtandili", new BigDecimal("2000.00"), transactions, card1);
-        SavingsAccount savings = new SavingsAccount("Elene", new BigDecimal("8000.00"), transactions, card2, new BigDecimal("4.5"));
-        LoanAccount loanAccount = new LoanAccount("Luka", new BigDecimal("0.00"), transactions, card3, loan);
+
+        Account account = new SavingsAccount("Avtandili", new BigDecimal("2000.00"), transactions, card1, new BigDecimal("3.0"));
+        Account savings = new SavingsAccount("Elene", new BigDecimal("8000.00"), transactions, card2, new BigDecimal("4.5"));
+        Account loanAccount = new LoanAccount("Luka", new BigDecimal("0.00"), transactions, card3, loan);
 
         Customer customer1 = new Customer("Avtandili Robakidze", "avtandili@gmail.com", passport1, account);
         Customer customer2 = new Customer("Elene Maisuradze", "elene@gmail.com", passport2, savings);
@@ -61,20 +62,35 @@ public class Main {
         Branch branch2 = new Branch("Liberty Kutaisi Branch", kutaisi);
         Branch[] branches = {branch1, branch2};
 
-        Bank bank = new Bank("TBC Bank", tbilisi, "TBC001", customers, employees);
-        InvestmentBank investmentBank = new InvestmentBank("Bank of Georgia", tbilisi, "BOG001", customers, employees, "Investments");
-        RetailBank retailBank = new RetailBank("Liberty Bank", tbilisi, "LIB001", customers, employees, 60, branches);
-        HedgeFund hedgeFund = new HedgeFund("Basis Bank", tbilisi, new BigDecimal("12000000.00"));
-        InsuranceCompany insurance = new InsuranceCompany("GPI Holding", tbilisi, "Health");
 
-        Bank[] banks = {bank, investmentBank, retailBank};
-        HedgeFund[] hedgeFunds = {hedgeFund};
-        InsuranceCompany[] insuranceCompanies = {insurance};
+        FinancialInstitution institution1 = new Bank("TBC Bank", tbilisi, "TBC001", customers, employees);
+        FinancialInstitution institution2 = new HedgeFund("Basis Bank", tbilisi, new BigDecimal("12000000.00"));
+        FinancialInstitution institution3 = new InsuranceCompany("GPI Holding", tbilisi, "Health");
+        FinancialInstitution institution4 = new InvestmentBank("Bank of Georgia", tbilisi, "BOG001", customers, employees, "Investments");
+        FinancialInstitution institution5 = new RetailBank("Liberty Bank", tbilisi, "LIB001", customers, employees, 60, branches);
+
+        Bank[] banks = {(Bank) institution1, (Bank) institution4, (Bank) institution5};
+        HedgeFund[] hedgeFunds = {(HedgeFund) institution2};
+        InsuranceCompany[] insuranceCompanies = {(InsuranceCompany) institution3};
 
         FinancialSector sector = new FinancialSector(banks, hedgeFunds, insuranceCompanies);
 
+        AccountService accountService = new AccountService();
+        accountService.process(institution1);
+        accountService.process(institution2);
+        accountService.process(institution3);
+
+        accountService.printAccountInfo(account);
+        accountService.printAccountInfo(savings);
+        accountService.printAccountInfo(loanAccount);
+
         LoanService loanService = new LoanService();
-        loanService.approveLoan(customer3, loanAccount);
+        loanService.process(institution1);
+        loanService.approveLoan(customer3, (LoanAccount) loanAccount);
+
+        System.out.println(customer1);
+        System.out.println(transaction1);
+        System.out.println(account);
 
         System.out.println("Total institutions created: " + FinancialInstitution.getTotalInstitutions());
 

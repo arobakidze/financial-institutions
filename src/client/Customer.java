@@ -1,6 +1,7 @@
 package client;
 
 import accounts.Account;
+import java.util.Objects;
 
 public class Customer {
 
@@ -14,6 +15,24 @@ public class Customer {
         this.customerEmail = customerEmail;
         this.passport = passport;
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{name='" + customerName + "', email='" + customerEmail + "'}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(customerEmail, customer.customerEmail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerEmail);
     }
 
     public String getCustomerName() {
