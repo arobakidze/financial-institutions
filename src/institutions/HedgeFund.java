@@ -1,6 +1,7 @@
 package institutions;
 
 import client.Address;
+
 import java.math.BigDecimal;
 
 public class HedgeFund extends FinancialInstitution {

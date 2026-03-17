@@ -1,6 +1,7 @@
 package accounts;
 
 import base.FinancialProduct;
+
 import java.time.LocalDate;
 
 public class Card extends FinancialProduct {

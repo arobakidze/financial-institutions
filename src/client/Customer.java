@@ -1,6 +1,7 @@
 package client;
 
 import accounts.Account;
+
 import java.util.Objects;
 
 public class Customer {
