@@ -8,8 +8,8 @@ public class RetailBank extends Bank {
     private int numberOfBranches;
     private Branch[] branches;
 
-    public RetailBank(String name, Address address, String bankCode, Customer[] customers, Employee[] employees, int numberOfBranches, Branch[] branches) {
-        super(name, address, bankCode, customers, employees);
+    public RetailBank(String name, String registrationNumber, Address address, String bankCode, Customer[] customers, Employee[] employees, int numberOfBranches, Branch[] branches) {
+        super(name, registrationNumber, address, bankCode, customers, employees);
         this.numberOfBranches = numberOfBranches;
         this.branches = branches;
     }

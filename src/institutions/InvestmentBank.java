@@ -7,8 +7,8 @@ public class InvestmentBank extends Bank {
 
     private String specialization;
 
-    public InvestmentBank(String name, Address address, String bankCode, Customer[] customers, Employee[] employees, String specialization) {
-        super(name, address, bankCode, customers, employees);
+    public InvestmentBank(String name, String registrationNumber, Address address, String bankCode, Customer[] customers, Employee[] employees, String specialization) {
+        super(name, registrationNumber, address, bankCode, customers, employees);
         this.specialization = specialization;
     }
 

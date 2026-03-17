@@ -1,15 +1,14 @@
 package institutions;
 
 import client.Address;
-
 import java.math.BigDecimal;
 
 public class HedgeFund extends FinancialInstitution {
 
     private BigDecimal totalAssets;
 
-    public HedgeFund(String name, Address address, BigDecimal totalAssets) {
-        super(name, address);
+    public HedgeFund(String name, String registrationNumber, Address address, BigDecimal totalAssets) {
+        super(name, registrationNumber, address);
         this.totalAssets = totalAssets;
     }
 

@@ -6,8 +6,8 @@ public class InsuranceCompany extends FinancialInstitution {
 
     private String insuranceType;
 
-    public InsuranceCompany(String name, Address address, String insuranceType) {
-        super(name, address);
+    public InsuranceCompany(String name, String registrationNumber, Address address, String insuranceType) {
+        super(name, registrationNumber, address);
         this.insuranceType = insuranceType;
     }
 

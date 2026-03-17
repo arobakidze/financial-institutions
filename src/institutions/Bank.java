@@ -9,8 +9,8 @@ public class Bank extends FinancialInstitution {
     private Customer[] customers;
     private Employee[] employees;
 
-    public Bank(String name, Address address, String bankCode, Customer[] customers, Employee[] employees) {
-        super(name, address);
+    public Bank(String name, String registrationNumber, Address address, String bankCode, Customer[] customers, Employee[] employees) {
+        super(name, registrationNumber, address);
         this.bankCode = bankCode;
         this.customers = customers;
         this.employees = employees;

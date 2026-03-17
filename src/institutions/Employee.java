@@ -1,21 +1,23 @@
-package institutions;   // Employee working at a financial institution
+package institutions;
 
-public class Employee {
+import base.Person;
 
-    private String employeeName;
+public class Employee extends Person {
+
     private String position;
 
     public Employee(String employeeName, String position) {
-        this.employeeName = employeeName;
+        super(employeeName, employeeName + "@company.com");
         this.position = position;
     }
 
-    public String getEmployeeName() {
-        return employeeName;
+    @Override
+    public String getRole() {
+        return "Employee";
     }
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
+    public String getEmployeeName() {
+        return getFullName();
     }
 
     public String getPosition() {

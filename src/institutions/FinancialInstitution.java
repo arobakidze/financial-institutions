@@ -1,27 +1,32 @@
 package institutions;
 
+import base.LegalEntity;
 import client.Address;
 
-public abstract class FinancialInstitution {
+public abstract class FinancialInstitution extends LegalEntity {
 
     private String name;
-    private Address address;
     private static int totalInstitutions = 0;
 
     static {
         System.out.println("FinancialInstitution class loaded.");
     }
 
-    public FinancialInstitution(String name, Address address) {
+    public FinancialInstitution(String name, String registrationNumber, Address address) {
+        super(registrationNumber, address);
         this.name = name;
-        this.address = address;
         totalInstitutions++;
     }
 
     public abstract String getInstitutionType();
 
+    @Override
+    public String getEntityType() {
+        return "Financial Institution";
+    }
+
     protected String getBasicInfo() {
-        return "Name: " + name + ", City: " + address.getCity();
+        return "Name: " + name + ", Registration: " + getRegistrationNumber();
     }
 
     public static int getTotalInstitutions() {
@@ -34,14 +39,6 @@ public abstract class FinancialInstitution {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public static void setTotalInstitutions(int totalInstitutions) {

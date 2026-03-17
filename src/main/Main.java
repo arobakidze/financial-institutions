@@ -5,6 +5,7 @@ import accounts.LoanAccount;
 import accounts.SavingsAccount;
 import accounts.Account;
 import client.Address;
+import client.ContactInfo;
 import client.Customer;
 import client.Passport;
 import institutions.Bank;
@@ -20,7 +21,6 @@ import sector.FinancialSector;
 import services.AccountService;
 import services.LoanService;
 import transactions.Transaction;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -30,6 +30,8 @@ public class Main {
 
         Address tbilisi = new Address("Rustaveli Avenue", "Tbilisi", "Georgia");
         Address kutaisi = new Address("Chavchavadze Street", "Kutaisi", "Georgia");
+
+        ContactInfo contactInfo = new ContactInfo("+995599123456", "info@tbcbank.ge", tbilisi);
 
         Passport passport1 = new Passport("GE123456", LocalDate.of(2028, 5, 20));
         Passport passport2 = new Passport("GE654321", LocalDate.of(2027, 3, 15));
@@ -44,7 +46,6 @@ public class Main {
         Card card3 = new Card("4333333333333333", LocalDate.of(2028, 9, 15), "debit");
 
         Loan loan = new Loan(new BigDecimal("15000.00"), new BigDecimal("5.5"), LocalDate.of(2025, 1, 1), 24);
-
 
         Account account = new SavingsAccount("Avtandili", new BigDecimal("2000.00"), transactions, card1, new BigDecimal("3.0"));
         Account savings = new SavingsAccount("Elene", new BigDecimal("8000.00"), transactions, card2, new BigDecimal("4.5"));
@@ -63,12 +64,11 @@ public class Main {
         Branch branch2 = new Branch("Liberty Kutaisi Branch", kutaisi);
         Branch[] branches = {branch1, branch2};
 
-
-        FinancialInstitution institution1 = new Bank("TBC Bank", tbilisi, "TBC001", customers, employees);
-        FinancialInstitution institution2 = new HedgeFund("Basis Bank", tbilisi, new BigDecimal("12000000.00"));
-        FinancialInstitution institution3 = new InsuranceCompany("GPI Holding", tbilisi, "Health");
-        FinancialInstitution institution4 = new InvestmentBank("Bank of Georgia", tbilisi, "BOG001", customers, employees, "Investments");
-        FinancialInstitution institution5 = new RetailBank("Liberty Bank", tbilisi, "LIB001", customers, employees, 60, branches);
+        FinancialInstitution institution1 = new Bank("TBC Bank", "REG001", tbilisi, "TBC001", customers, employees);
+        FinancialInstitution institution2 = new HedgeFund("Basis Bank", "REG002", tbilisi, new BigDecimal("12000000.00"));
+        FinancialInstitution institution3 = new InsuranceCompany("GPI Holding", "REG003", tbilisi, "Health");
+        FinancialInstitution institution4 = new InvestmentBank("Bank of Georgia", "REG004", tbilisi, "BOG001", customers, employees, "Investments");
+        FinancialInstitution institution5 = new RetailBank("Liberty Bank", "REG005", tbilisi, "LIB001", customers, employees, 60, branches);
 
         Bank[] banks = {(Bank) institution1, (Bank) institution4, (Bank) institution5};
         HedgeFund[] hedgeFunds = {(HedgeFund) institution2};
@@ -93,6 +93,8 @@ public class Main {
         System.out.println(transaction1);
         System.out.println(account);
 
+        System.out.println("Sector type: " + sector.getGroupType());
+        System.out.println("Contact phone: " + contactInfo.getPhoneNumber());
         System.out.println("Total institutions created: " + FinancialInstitution.getTotalInstitutions());
 
     }
