@@ -16,11 +16,16 @@ import institutions.HedgeFund;
 import institutions.InsuranceCompany;
 import institutions.InvestmentBank;
 import institutions.RetailBank;
+import interfaces.Auditable;
+import interfaces.Reportable;
+import interfaces.Taxable;
+import interfaces.Transferable;
 import loans.Loan;
 import sector.FinancialSector;
 import services.AccountService;
 import services.LoanService;
 import transactions.Transaction;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -76,10 +81,30 @@ public class Main {
 
         FinancialSector sector = new FinancialSector(banks, hedgeFunds, insuranceCompanies);
 
+
+        Taxable taxable1 = (Taxable) institution1;
+        Taxable taxable2 = (Taxable) institution2;
+        System.out.println("TBC Bank tax: " + taxable1.calculateTax());
+        System.out.println("Basis Bank tax: " + taxable2.calculateTax());
+
+        Reportable reportable1 = (Reportable) institution1;
+        Reportable reportable2 = sector;
+        System.out.println(reportable1.generateReport());
+        System.out.println(reportable2.generateReport());
+
+        Auditable auditable1 = (Auditable) institution1;
+        Auditable auditable2 = (Auditable) loanAccount;
+        auditable1.audit();
+        auditable2.audit();
+
+        Transferable transferable = (Transferable) account;
+        transferable.transfer(new BigDecimal("500.00"), "GE29TB1234567890");
+
         AccountService accountService = new AccountService();
         accountService.process(institution1);
         accountService.process(institution2);
         accountService.process(institution3);
+        accountService.sendNotification("Welcome to TBC Bank!");
 
         accountService.printAccountInfo(account);
         accountService.printAccountInfo(savings);

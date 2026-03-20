@@ -4,9 +4,11 @@ import base.InstitutionGroup;
 import institutions.Bank;
 import institutions.HedgeFund;
 import institutions.InsuranceCompany;
+import interfaces.Reportable;
 
-public class FinancialSector extends InstitutionGroup {
+public final class FinancialSector extends InstitutionGroup implements Reportable {
 
+    private static final String SECTOR_TYPE = "Financial Sector";
     private Bank[] banks;
     private HedgeFund[] hedgeFunds;
     private InsuranceCompany[] insuranceCompanies;
@@ -19,8 +21,15 @@ public class FinancialSector extends InstitutionGroup {
     }
 
     @Override
-    public String getGroupType() {
-        return "Financial Sector";
+    public final String getGroupType() {
+        return SECTOR_TYPE;
+    }
+
+    @Override
+    public String generateReport() {
+        return "Financial Sector Report | Banks: " + banks.length +
+                " | Hedge Funds: " + hedgeFunds.length +
+                " | Insurance Companies: " + insuranceCompanies.length;
     }
 
     public Bank[] getBanks() {
