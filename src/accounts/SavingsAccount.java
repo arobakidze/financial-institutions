@@ -1,5 +1,6 @@
 package accounts;
 
+import exceptions.InsufficientFundsException;
 import interfaces.Transferable;
 import transactions.Transaction;
 
@@ -22,11 +23,13 @@ public class SavingsAccount extends Account implements Transferable {
 
     @Override
     public void transfer(BigDecimal amount, String toAccount) {
-        if (amount.compareTo(TRANSFER_LIMIT) > 0) {
-            System.out.println("Transfer failed - exceeds limit of " + TRANSFER_LIMIT);
-        } else {
-            System.out.println("Transferred " + amount + " from " + getOwner() + "'s savings to account " + toAccount);
+        if (amount.compareTo(getBalance()) > 0) {
+            throw new InsufficientFundsException("Insufficient funds for transfer. Balance: " + getBalance() + ", Requested: " + amount);
         }
+        if (amount.compareTo(TRANSFER_LIMIT) > 0) {
+            throw new InsufficientFundsException("Transfer amount exceeds limit of " + TRANSFER_LIMIT);
+        }
+        System.out.println("Transferred " + amount + " from " + getOwner() + "'s savings to account " + toAccount);
     }
 
     @Override

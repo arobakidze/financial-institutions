@@ -2,6 +2,7 @@ package institutions;
 
 import client.Address;
 import client.Customer;
+import exceptions.AuditFailedException;
 import interfaces.Auditable;
 import interfaces.Reportable;
 import interfaces.Taxable;
@@ -41,7 +42,10 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
     }
 
     @Override
-    public void audit() {
+    public void audit() throws AuditFailedException {
+        if (customers == null || customers.length == 0) {
+            throw new AuditFailedException("Audit failed — no customers found for bank: " + getName());
+        }
         System.out.println("Auditing bank: " + getName());
         this.lastAuditDate = LocalDate.now();
     }

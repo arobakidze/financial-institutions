@@ -8,6 +8,8 @@ import client.Address;
 import client.ContactInfo;
 import client.Customer;
 import client.Passport;
+import exceptions.AuditFailedException;
+import exceptions.InsufficientFundsException;
 import institutions.Bank;
 import institutions.Branch;
 import institutions.Employee;
@@ -21,6 +23,7 @@ import interfaces.Reportable;
 import interfaces.Taxable;
 import interfaces.Transferable;
 import loans.Loan;
+import resources.BankingResource;
 import sector.FinancialSector;
 import services.AccountService;
 import services.LoanService;
@@ -81,7 +84,7 @@ public class Main {
 
         FinancialSector sector = new FinancialSector(banks, hedgeFunds, insuranceCompanies);
 
-
+        // Polymorphism via interface fields
         Taxable taxable1 = (Taxable) institution1;
         Taxable taxable2 = (Taxable) institution2;
         System.out.println("TBC Bank tax: " + taxable1.calculateTax());
@@ -92,19 +95,34 @@ public class Main {
         System.out.println(reportable1.generateReport());
         System.out.println(reportable2.generateReport());
 
+        // Handling checked exception
         Auditable auditable1 = (Auditable) institution1;
-        Auditable auditable2 = (Auditable) loanAccount;
-        auditable1.audit();
-        auditable2.audit();
+        try {
+            auditable1.audit();
+        } catch (AuditFailedException e) {
+            System.out.println("Audit error: " + e.getMessage());
+        }
 
+        // Handling unchecked exception
         Transferable transferable = (Transferable) account;
-        transferable.transfer(new BigDecimal("500.00"), "GE29TB1234567890");
+        try {
+            transferable.transfer(new BigDecimal("99999.00"), "GE29TB1234567890");
+        } catch (InsufficientFundsException e) {
+            System.out.println("Transfer error: " + e.getMessage());
+        }
 
         AccountService accountService = new AccountService();
         accountService.process(institution1);
         accountService.process(institution2);
         accountService.process(institution3);
         accountService.sendNotification("Welcome to TBC Bank!");
+
+        // Validate transaction — throws InvalidTransactionException if invalid
+        try {
+            accountService.validateTransaction(transaction1);
+        } catch (Exception e) {
+            System.out.println("Transaction error: " + e.getMessage());
+        }
 
         accountService.printAccountInfo(account);
         accountService.printAccountInfo(savings);
@@ -113,6 +131,12 @@ public class Main {
         LoanService loanService = new LoanService();
         loanService.process(institution1);
         loanService.approveLoan(customer3, (LoanAccount) loanAccount);
+
+        // try-with-resources — AutoCloseable
+        try (BankingResource resource = new BankingResource("TBC Core Banking System")) {
+            resource.process("ACC-001");
+            resource.process("ACC-002");
+        }
 
         System.out.println(customer1);
         System.out.println(transaction1);

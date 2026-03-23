@@ -1,5 +1,7 @@
 package accounts;
 
+import exceptions.AuditFailedException;
+import exceptions.InvalidLoanAmountException;
 import interfaces.Auditable;
 import loans.Loan;
 import transactions.Transaction;
@@ -14,6 +16,9 @@ public class LoanAccount extends Account implements Auditable {
 
     public LoanAccount(String owner, BigDecimal balance, Transaction[] transactions, Card card, Loan loan) {
         super(owner, balance, transactions, card);
+        if (loan.getLoanAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidLoanAmountException("Loan amount must be greater than zero.");
+        }
         this.loan = loan;
         this.lastAuditDate = LocalDate.now();
     }
@@ -24,7 +29,10 @@ public class LoanAccount extends Account implements Auditable {
     }
 
     @Override
-    public void audit() {
+    public void audit() throws AuditFailedException {
+        if (loan == null) {
+            throw new AuditFailedException("Audit failed — no loan attached to account for: " + getOwner());
+        }
         System.out.println("Auditing loan account for: " + getOwner());
         this.lastAuditDate = LocalDate.now();
     }

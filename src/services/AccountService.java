@@ -1,10 +1,15 @@
 package services;
 
 import accounts.Account;
+import exceptions.AuditFailedException;
+import exceptions.InvalidTransactionException;
 import interfaces.Auditable;
 import interfaces.Notifiable;
 import interfaces.Reportable;
 import institutions.FinancialInstitution;
+import transactions.Transaction;
+
+import java.math.BigDecimal;
 
 public class AccountService extends BaseService implements Notifiable {
 
@@ -20,7 +25,11 @@ public class AccountService extends BaseService implements Notifiable {
         }
 
         if (institution instanceof Auditable) {
-            ((Auditable) institution).audit();
+            try {
+                ((Auditable) institution).audit();
+            } catch (AuditFailedException e) {
+                System.out.println("Audit error: " + e.getMessage());
+            }
         }
     }
 
@@ -39,6 +48,13 @@ public class AccountService extends BaseService implements Notifiable {
         System.out.println("Account type: " + account.getAccountType());
         System.out.println("Owner: " + account.getOwner());
         System.out.println("Balance: " + account.getBalance());
+    }
+
+    public void validateTransaction(Transaction transaction) {
+        if (transaction.getTransactionAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidTransactionException("Transaction amount must be greater than zero. Got: " + transaction.getTransactionAmount());
+        }
+        System.out.println("Transaction valid: " + transaction.getTransactionAmount());
     }
 
 }
