@@ -84,7 +84,6 @@ public class Main {
 
         FinancialSector sector = new FinancialSector(banks, hedgeFunds, insuranceCompanies);
 
-        // Polymorphism via interface fields
         Taxable taxable1 = (Taxable) institution1;
         Taxable taxable2 = (Taxable) institution2;
         System.out.println("TBC Bank tax: " + taxable1.calculateTax());
@@ -95,15 +94,19 @@ public class Main {
         System.out.println(reportable1.generateReport());
         System.out.println(reportable2.generateReport());
 
-        // Handling checked exception
         Auditable auditable1 = (Auditable) institution1;
         try {
             auditable1.audit();
         } catch (AuditFailedException e) {
             System.out.println("Audit error: " + e.getMessage());
+        } finally {
+            System.out.println("Audit process completed for: " + institution1.getName());
         }
 
-        // Handling unchecked exception
+        AccountService accountService = new AccountService();
+
+        accountService.validateTransaction(transaction1);
+
         Transferable transferable = (Transferable) account;
         try {
             transferable.transfer(new BigDecimal("99999.00"), "GE29TB1234567890");
@@ -111,18 +114,12 @@ public class Main {
             System.out.println("Transfer error: " + e.getMessage());
         }
 
-        AccountService accountService = new AccountService();
         accountService.process(institution1);
         accountService.process(institution2);
         accountService.process(institution3);
         accountService.sendNotification("Welcome to TBC Bank!");
 
-        // Validate transaction — throws InvalidTransactionException if invalid
-        try {
-            accountService.validateTransaction(transaction1);
-        } catch (Exception e) {
-            System.out.println("Transaction error: " + e.getMessage());
-        }
+        accountService.validateTransaction(transaction1);
 
         accountService.printAccountInfo(account);
         accountService.printAccountInfo(savings);
@@ -132,7 +129,6 @@ public class Main {
         loanService.process(institution1);
         loanService.approveLoan(customer3, (LoanAccount) loanAccount);
 
-        // try-with-resources — AutoCloseable
         try (BankingResource resource = new BankingResource("TBC Core Banking System")) {
             resource.process("ACC-001");
             resource.process("ACC-002");
@@ -145,7 +141,5 @@ public class Main {
         System.out.println("Sector type: " + sector.getGroupType());
         System.out.println("Contact phone: " + contactInfo.getPhoneNumber());
         System.out.println("Total institutions created: " + FinancialInstitution.getTotalInstitutions());
-
     }
-
 }
