@@ -3,12 +3,15 @@ package institutions;
 import client.Address;
 import client.Customer;
 
+import java.util.List;
+import java.util.Set;
+
 public class RetailBank extends Bank {
 
     private int numberOfBranches;
-    private Branch[] branches;
+    private List<Branch> branches;
 
-    public RetailBank(String name, String registrationNumber, Address address, String bankCode, Customer[] customers, Employee[] employees, int numberOfBranches, Branch[] branches) {
+    public RetailBank(String name, String registrationNumber, Address address, String bankCode, List<Customer> customers, Set<Employee> employees, int numberOfBranches, List<Branch> branches) {
         super(name, registrationNumber, address, bankCode, customers, employees);
         this.numberOfBranches = numberOfBranches;
         this.branches = branches;
@@ -27,11 +30,11 @@ public class RetailBank extends Bank {
         this.numberOfBranches = numberOfBranches;
     }
 
-    public Branch[] getBranches() {
+    public List<Branch> getBranches() {
         return branches;
     }
 
-    public void setBranches(Branch[] branches) {
+    public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
 

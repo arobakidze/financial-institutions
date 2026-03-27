@@ -3,16 +3,17 @@ package accounts;
 import transactions.Transaction;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Account {
 
     private String owner;
     private BigDecimal balance;
-    private Transaction[] transactions;
+    private List<Transaction> transactions;
     private Card card;
 
-    public Account(String owner, BigDecimal balance, Transaction[] transactions, Card card) {
+    public Account(String owner, BigDecimal balance, List<Transaction> transactions, Card card) {
         this.owner = owner;
         this.balance = balance;
         this.transactions = transactions;
@@ -59,11 +60,11 @@ public abstract class Account {
         this.balance = balance;
     }
 
-    public Transaction[] getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(Transaction[] transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 

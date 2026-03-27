@@ -8,13 +8,14 @@ import transactions.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class LoanAccount extends Account implements Auditable {
 
     private Loan loan;
     private LocalDate lastAuditDate;
 
-    public LoanAccount(String owner, BigDecimal balance, Transaction[] transactions, Card card, Loan loan) {
+    public LoanAccount(String owner, BigDecimal balance, List<Transaction> transactions, Card card, Loan loan) {
         super(owner, balance, transactions, card);
         if (loan.getLoanAmount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new InvalidLoanAmountException("Loan amount must be greater than zero.");

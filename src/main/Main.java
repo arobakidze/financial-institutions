@@ -9,7 +9,7 @@ import client.ContactInfo;
 import client.Customer;
 import client.Passport;
 import exceptions.AuditFailedException;
-import exceptions.InsufficientFundsException;
+import generic.Pair;
 import institutions.Bank;
 import institutions.Branch;
 import institutions.Employee;
@@ -31,6 +31,7 @@ import transactions.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.*;
 
 public class Main {
 
@@ -45,9 +46,9 @@ public class Main {
         Passport passport2 = new Passport("GE654321", LocalDate.of(2027, 3, 15));
         Passport passport3 = new Passport("GE111222", LocalDate.of(2029, 8, 10));
 
-        Transaction transaction1 = new Transaction(new BigDecimal("300.00"), "deposit", LocalDate.of(2025, 3, 10));
-        Transaction transaction2 = new Transaction(new BigDecimal("150.00"), "withdrawal", LocalDate.of(2025, 3, 11));
-        Transaction[] transactions = {transaction1, transaction2};
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(new Transaction(new BigDecimal("300.00"), "deposit", LocalDate.of(2025, 3, 10)));
+        transactions.add(new Transaction(new BigDecimal("150.00"), "withdrawal", LocalDate.of(2025, 3, 11)));
 
         Card card1 = new Card("4111111111111111", LocalDate.of(2027, 12, 31), "debit");
         Card card2 = new Card("4222222222222222", LocalDate.of(2026, 6, 30), "credit");
@@ -62,15 +63,19 @@ public class Main {
         Customer customer1 = new Customer("Avtandili Robakidze", "avtandili@gmail.com", passport1, account);
         Customer customer2 = new Customer("Elene Maisuradze", "elene@gmail.com", passport2, savings);
         Customer customer3 = new Customer("Luka Beridze", "luka@gmail.com", passport3, loanAccount);
-        Customer[] customers = {customer1, customer2, customer3};
 
-        Employee employee1 = new Employee("Giorgi Kiknadze", "Manager");
-        Employee employee2 = new Employee("Nino Tsiklauri", "Accountant");
-        Employee[] employees = {employee1, employee2};
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer1);
+        customers.add(customer2);
+        customers.add(customer3);
 
-        Branch branch1 = new Branch("TBC Rustaveli Branch", tbilisi);
-        Branch branch2 = new Branch("Liberty Kutaisi Branch", kutaisi);
-        Branch[] branches = {branch1, branch2};
+        Set<Employee> employees = new HashSet<>();
+        employees.add(new Employee("Giorgi Kiknadze", "Manager"));
+        employees.add(new Employee("Nino Tsiklauri", "Accountant"));
+
+        List<Branch> branches = new ArrayList<>();
+        branches.add(new Branch("TBC Rustaveli Branch", tbilisi));
+        branches.add(new Branch("Liberty Kutaisi Branch", kutaisi));
 
         FinancialInstitution institution1 = new Bank("TBC Bank", "REG001", tbilisi, "TBC001", customers, employees);
         FinancialInstitution institution2 = new HedgeFund("Basis Bank", "REG002", tbilisi, new BigDecimal("12000000.00"));
@@ -78,11 +83,35 @@ public class Main {
         FinancialInstitution institution4 = new InvestmentBank("Bank of Georgia", "REG004", tbilisi, "BOG001", customers, employees, "Investments");
         FinancialInstitution institution5 = new RetailBank("Liberty Bank", "REG005", tbilisi, "LIB001", customers, employees, 60, branches);
 
-        Bank[] banks = {(Bank) institution1, (Bank) institution4, (Bank) institution5};
-        HedgeFund[] hedgeFunds = {(HedgeFund) institution2};
-        InsuranceCompany[] insuranceCompanies = {(InsuranceCompany) institution3};
 
-        FinancialSector sector = new FinancialSector(banks, hedgeFunds, insuranceCompanies);
+        Map<String, FinancialInstitution> institutionMap = new LinkedHashMap<>();
+        institutionMap.put(institution1.getName(), institution1);
+        institutionMap.put(institution2.getName(), institution2);
+        institutionMap.put(institution3.getName(), institution3);
+        institutionMap.put(institution4.getName(), institution4);
+        institutionMap.put(institution5.getName(), institution5);
+
+        System.out.println("Institutions map size: " + institutionMap.size());
+        System.out.println("Is map empty: " + institutionMap.isEmpty());
+        System.out.println("First institution: " + institutionMap.entrySet().iterator().next().getValue().getName());
+        institutionMap.remove("Basis Bank");
+        System.out.println("After remove, size: " + institutionMap.size());
+        institutionMap.put(institution2.getName(), institution2);
+
+        FinancialSector sector = new FinancialSector(institutionMap);
+
+        AccountService accountService = new AccountService();
+
+        accountService.iterateCustomers(customers);
+
+        accountService.iterateEmployees(((Bank) institution1).getEmployees());
+
+        accountService.iterateCustomerAccounts(((Bank) institution1).getCustomerAccountMap());
+
+        accountService.useRepository(transactions);
+
+        Pair<String, BigDecimal> pair = accountService.getAccountSummaryPair(account);
+        System.out.println("Account summary pair: " + pair);
 
         Taxable taxable1 = (Taxable) institution1;
         Taxable taxable2 = (Taxable) institution2;
@@ -103,23 +132,15 @@ public class Main {
             System.out.println("Audit process completed for: " + institution1.getName());
         }
 
-        AccountService accountService = new AccountService();
-
-        accountService.validateTransaction(transaction1);
-
         Transferable transferable = (Transferable) account;
-        try {
-            transferable.transfer(new BigDecimal("99999.00"), "GE29TB1234567890");
-        } catch (InsufficientFundsException e) {
-            System.out.println("Transfer error: " + e.getMessage());
-        }
+        transferable.transfer(new BigDecimal("500.00"), "GE29TB1234567890");
 
         accountService.process(institution1);
         accountService.process(institution2);
         accountService.process(institution3);
         accountService.sendNotification("Welcome to TBC Bank!");
 
-        accountService.validateTransaction(transaction1);
+        accountService.validateTransaction(transactions.get(0));
 
         accountService.printAccountInfo(account);
         accountService.printAccountInfo(savings);
@@ -129,17 +150,20 @@ public class Main {
         loanService.process(institution1);
         loanService.approveLoan(customer3, (LoanAccount) loanAccount);
 
+
         try (BankingResource resource = new BankingResource("TBC Core Banking System")) {
             resource.process("ACC-001");
             resource.process("ACC-002");
         }
 
         System.out.println(customer1);
-        System.out.println(transaction1);
+        System.out.println(transactions.get(0));
         System.out.println(account);
 
         System.out.println("Sector type: " + sector.getGroupType());
         System.out.println("Contact phone: " + contactInfo.getPhoneNumber());
         System.out.println("Total institutions created: " + FinancialInstitution.getTotalInstitutions());
+
     }
+
 }

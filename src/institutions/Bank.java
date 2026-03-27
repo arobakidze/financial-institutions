@@ -1,5 +1,6 @@
 package institutions;
 
+import accounts.Account;
 import client.Address;
 import client.Customer;
 import exceptions.AuditFailedException;
@@ -9,20 +10,26 @@ import interfaces.Taxable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.*;
 
 public class Bank extends FinancialInstitution implements Taxable, Auditable, Reportable {
 
     private static final BigDecimal TAX_RATE = new BigDecimal("0.20");
     private String bankCode;
-    private Customer[] customers;
-    private Employee[] employees;
+    private List<Customer> customers;
+    private Set<Employee> employees;
+    private Map<Customer, Account> customerAccountMap;
     private LocalDate lastAuditDate;
 
-    public Bank(String name, String registrationNumber, Address address, String bankCode, Customer[] customers, Employee[] employees) {
+    public Bank(String name, String registrationNumber, Address address, String bankCode, List<Customer> customers, Set<Employee> employees) {
         super(name, registrationNumber, address);
         this.bankCode = bankCode;
         this.customers = customers;
         this.employees = employees;
+        this.customerAccountMap = new HashMap<>();
+        for (Customer customer : customers) {
+            customerAccountMap.put(customer, customer.getAccount());
+        }
         this.lastAuditDate = LocalDate.now();
     }
 
@@ -43,7 +50,7 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
 
     @Override
     public void audit() throws AuditFailedException {
-        if (customers == null || customers.length == 0) {
+        if (customers == null || customers.isEmpty()) {
             throw new AuditFailedException("Audit failed — no customers found for bank: " + getName());
         }
         System.out.println("Auditing bank: " + getName());
@@ -57,7 +64,7 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
 
     @Override
     public String generateReport() {
-        return "Bank Report: " + getName() + " | Customers: " + customers.length + " | Tax: " + calculateTax();
+        return "Bank Report: " + getName() + " | Customers: " + customers.size() + " | Tax: " + calculateTax();
     }
 
     public String getBankCode() {
@@ -68,20 +75,28 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
         this.bankCode = bankCode;
     }
 
-    public Customer[] getCustomers() {
+    public List<Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Customer[] customers) {
+    public void setCustomers(List<Customer> customers) {
         this.customers = customers;
     }
 
-    public Employee[] getEmployees() {
+    public Set<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Employee[] employees) {
+    public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+
+    public Map<Customer, Account> getCustomerAccountMap() {
+        return customerAccountMap;
+    }
+
+    public void setCustomerAccountMap(Map<Customer, Account> customerAccountMap) {
+        this.customerAccountMap = customerAccountMap;
     }
 
 }

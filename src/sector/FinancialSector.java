@@ -1,23 +1,19 @@
 package sector;
 
 import base.InstitutionGroup;
-import institutions.Bank;
-import institutions.HedgeFund;
-import institutions.InsuranceCompany;
+import institutions.FinancialInstitution;
 import interfaces.Reportable;
+
+import java.util.Map;
 
 public final class FinancialSector extends InstitutionGroup implements Reportable {
 
     private static final String SECTOR_TYPE = "Financial Sector";
-    private Bank[] banks;
-    private HedgeFund[] hedgeFunds;
-    private InsuranceCompany[] insuranceCompanies;
+    private Map<String, FinancialInstitution> institutions;
 
-    public FinancialSector(Bank[] banks, HedgeFund[] hedgeFunds, InsuranceCompany[] insuranceCompanies) {
+    public FinancialSector(Map<String, FinancialInstitution> institutions) {
         super("Georgian Financial Sector");
-        this.banks = banks;
-        this.hedgeFunds = hedgeFunds;
-        this.insuranceCompanies = insuranceCompanies;
+        this.institutions = institutions;
     }
 
     @Override
@@ -27,33 +23,15 @@ public final class FinancialSector extends InstitutionGroup implements Reportabl
 
     @Override
     public String generateReport() {
-        return "Financial Sector Report | Banks: " + banks.length +
-                " | Hedge Funds: " + hedgeFunds.length +
-                " | Insurance Companies: " + insuranceCompanies.length;
+        return "Financial Sector Report | Total Institutions: " + institutions.size();
     }
 
-    public Bank[] getBanks() {
-        return banks;
+    public Map<String, FinancialInstitution> getInstitutions() {
+        return institutions;
     }
 
-    public void setBanks(Bank[] banks) {
-        this.banks = banks;
-    }
-
-    public HedgeFund[] getHedgeFunds() {
-        return hedgeFunds;
-    }
-
-    public void setHedgeFunds(HedgeFund[] hedgeFunds) {
-        this.hedgeFunds = hedgeFunds;
-    }
-
-    public InsuranceCompany[] getInsuranceCompanies() {
-        return insuranceCompanies;
-    }
-
-    public void setInsuranceCompanies(InsuranceCompany[] insuranceCompanies) {
-        this.insuranceCompanies = insuranceCompanies;
+    public void setInstitutions(Map<String, FinancialInstitution> institutions) {
+        this.institutions = institutions;
     }
 
 }

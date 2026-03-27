@@ -2,6 +2,8 @@ package institutions;
 
 import base.Person;
 
+import java.util.Objects;
+
 public class Employee extends Person {
 
     private String position;
@@ -14,6 +16,19 @@ public class Employee extends Person {
     @Override
     public String getRole() {
         return "Employee";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(getFullName(), employee.getFullName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFullName());
     }
 
     public String getEmployeeName() {

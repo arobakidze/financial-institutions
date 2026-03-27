@@ -5,13 +5,14 @@ import interfaces.Transferable;
 import transactions.Transaction;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class SavingsAccount extends Account implements Transferable {
 
     private static final BigDecimal TRANSFER_LIMIT = new BigDecimal("10000.00");
     private BigDecimal interestRate;
 
-    public SavingsAccount(String owner, BigDecimal balance, Transaction[] transactions, Card card, BigDecimal interestRate) {
+    public SavingsAccount(String owner, BigDecimal balance, List<Transaction> transactions, Card card, BigDecimal interestRate) {
         super(owner, balance, transactions, card);
         this.interestRate = interestRate;
     }
@@ -24,10 +25,10 @@ public class SavingsAccount extends Account implements Transferable {
     @Override
     public void transfer(BigDecimal amount, String toAccount) {
         if (amount.compareTo(getBalance()) > 0) {
-            throw new InsufficientFundsException("Insufficient funds for transfer. Balance: " + getBalance() + ", Requested: " + amount);
+            throw new InsufficientFundsException("Insufficient funds. Balance: " + getBalance() + ", Requested: " + amount);
         }
         if (amount.compareTo(TRANSFER_LIMIT) > 0) {
-            throw new InsufficientFundsException("Transfer amount exceeds limit of " + TRANSFER_LIMIT);
+            throw new InsufficientFundsException("Transfer exceeds limit of " + TRANSFER_LIMIT);
         }
         System.out.println("Transferred " + amount + " from " + getOwner() + "'s savings to account " + toAccount);
     }
