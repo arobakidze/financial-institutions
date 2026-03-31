@@ -2,10 +2,12 @@ package institutions;
 
 import base.LegalEntity;
 import client.Address;
+import enums.InstitutionStatus;
 
 public abstract class FinancialInstitution extends LegalEntity {
 
     private String name;
+    private InstitutionStatus status;
     private static int totalInstitutions = 0;
 
     static {
@@ -15,6 +17,7 @@ public abstract class FinancialInstitution extends LegalEntity {
     public FinancialInstitution(String name, String registrationNumber, Address address) {
         super(registrationNumber, address);
         this.name = name;
+        this.status = InstitutionStatus.ACTIVE;
         totalInstitutions++;
     }
 
@@ -26,7 +29,7 @@ public abstract class FinancialInstitution extends LegalEntity {
     }
 
     protected String getBasicInfo() {
-        return "Name: " + name + ", Registration: " + getRegistrationNumber();
+        return "Name: " + name + ", Registration: " + getRegistrationNumber() + ", Status: " + status.getCode();
     }
 
     public static int getTotalInstitutions() {
@@ -39,6 +42,14 @@ public abstract class FinancialInstitution extends LegalEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public InstitutionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InstitutionStatus status) {
+        this.status = status;
     }
 
     public static void setTotalInstitutions(int totalInstitutions) {

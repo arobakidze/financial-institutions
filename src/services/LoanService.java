@@ -2,8 +2,8 @@ package services;
 
 import accounts.LoanAccount;
 import client.Customer;
-import interfaces.Notifiable;
 import institutions.FinancialInstitution;
+import interfaces.Notifiable;
 
 import java.math.BigDecimal;
 

@@ -1,6 +1,7 @@
 package loans;
 
 import base.FinancialProduct;
+import enums.LoanStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ public class Loan extends FinancialProduct {
     private BigDecimal interestRate;
     private LocalDate startDate;
     private int durationMonths;
+    private LoanStatus loanStatus;
 
     public Loan(BigDecimal loanAmount, BigDecimal interestRate, LocalDate startDate, int durationMonths) {
         super("Loan");
@@ -18,6 +20,7 @@ public class Loan extends FinancialProduct {
         this.interestRate = interestRate;
         this.startDate = startDate;
         this.durationMonths = durationMonths;
+        this.loanStatus = LoanStatus.PENDING;
     }
 
     @Override
@@ -55,6 +58,14 @@ public class Loan extends FinancialProduct {
 
     public void setDurationMonths(int durationMonths) {
         this.durationMonths = durationMonths;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 
 }

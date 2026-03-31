@@ -1,5 +1,6 @@
 package accounts;
 
+import enums.AccountTier;
 import transactions.Transaction;
 
 import java.math.BigDecimal;
@@ -12,23 +13,25 @@ public abstract class Account {
     private BigDecimal balance;
     private List<Transaction> transactions;
     private Card card;
+    private AccountTier accountTier;
 
     public Account(String owner, BigDecimal balance, List<Transaction> transactions, Card card) {
         this.owner = owner;
         this.balance = balance;
         this.transactions = transactions;
         this.card = card;
+        this.accountTier = AccountTier.BASIC;
     }
 
     public abstract String getAccountType();
 
     protected String getAccountSummary() {
-        return "Owner: " + owner + ", Balance: " + balance + ", Type: " + getAccountType();
+        return "Owner: " + owner + ", Balance: " + balance + ", Type: " + getAccountType() + ", Tier: " + accountTier;
     }
 
     @Override
     public String toString() {
-        return "Account{owner='" + owner + "', balance=" + balance + ", type='" + getAccountType() + "'}";
+        return "Account{owner='" + owner + "', balance=" + balance + ", type='" + getAccountType() + "', tier=" + accountTier + "}";
     }
 
     @Override
@@ -74,6 +77,14 @@ public abstract class Account {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public AccountTier getAccountTier() {
+        return accountTier;
+    }
+
+    public void setAccountTier(AccountTier accountTier) {
+        this.accountTier = accountTier;
     }
 
 }

@@ -1,5 +1,6 @@
 package transactions;
 
+import enums.TransactionType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -7,10 +8,10 @@ import java.util.Objects;
 public class Transaction {
 
     private BigDecimal transactionAmount;
-    private String transactionType;
+    private TransactionType transactionType;
     private LocalDate transactionDate;
 
-    public Transaction(BigDecimal transactionAmount, String transactionType, LocalDate transactionDate) {
+    public Transaction(BigDecimal transactionAmount, TransactionType transactionType, LocalDate transactionDate) {
         this.transactionAmount = transactionAmount;
         this.transactionType = transactionType;
         this.transactionDate = transactionDate;
@@ -18,7 +19,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{amount=" + transactionAmount + ", type='" + transactionType + "', date=" + transactionDate + "}";
+        return "Transaction{amount=" + transactionAmount + ", type=" + transactionType + ", date=" + transactionDate + "}";
     }
 
     @Override
@@ -27,7 +28,7 @@ public class Transaction {
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
         return Objects.equals(transactionAmount, that.transactionAmount) &&
-                Objects.equals(transactionType, that.transactionType) &&
+                transactionType == that.transactionType &&
                 Objects.equals(transactionDate, that.transactionDate);
     }
 
@@ -36,28 +37,11 @@ public class Transaction {
         return Objects.hash(transactionAmount, transactionType, transactionDate);
     }
 
-    public BigDecimal getTransactionAmount() {
-        return transactionAmount;
-    }
-
-    public void setTransactionAmount(BigDecimal transactionAmount) {
-        this.transactionAmount = transactionAmount;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public LocalDate getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
+    public BigDecimal getTransactionAmount() { return transactionAmount; }
+    public void setTransactionAmount(BigDecimal transactionAmount) { this.transactionAmount = transactionAmount; }
+    public TransactionType getTransactionType() { return transactionType; }
+    public void setTransactionType(TransactionType transactionType) { this.transactionType = transactionType; }
+    public LocalDate getTransactionDate() { return transactionDate; }
+    public void setTransactionDate(LocalDate transactionDate) { this.transactionDate = transactionDate; }
 
 }

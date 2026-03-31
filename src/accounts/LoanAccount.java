@@ -1,5 +1,6 @@
 package accounts;
 
+import enums.RiskLevel;
 import exceptions.AuditFailedException;
 import exceptions.InvalidLoanAmountException;
 import interfaces.Auditable;
@@ -14,6 +15,7 @@ public class LoanAccount extends Account implements Auditable {
 
     private Loan loan;
     private LocalDate lastAuditDate;
+    private RiskLevel riskLevel;
 
     public LoanAccount(String owner, BigDecimal balance, List<Transaction> transactions, Card card, Loan loan) {
         super(owner, balance, transactions, card);
@@ -22,6 +24,7 @@ public class LoanAccount extends Account implements Auditable {
         }
         this.loan = loan;
         this.lastAuditDate = LocalDate.now();
+        this.riskLevel = RiskLevel.LOW;
     }
 
     @Override
@@ -49,6 +52,14 @@ public class LoanAccount extends Account implements Auditable {
 
     public void setLoan(Loan loan) {
         this.loan = loan;
+    }
+
+    public RiskLevel getRiskLevel() {
+        return riskLevel;
+    }
+
+    public void setRiskLevel(RiskLevel riskLevel) {
+        this.riskLevel = riskLevel;
     }
 
 }
