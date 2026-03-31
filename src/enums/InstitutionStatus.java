@@ -2,24 +2,9 @@ package enums;
 
 public enum InstitutionStatus {
 
-    ACTIVE("Fully operational", "ACT") {
-        @Override
-        public String getStatusMessage() {
-            return "Institution is fully operational and accepting customers.";
-        }
-    },
-    INACTIVE("Not operational", "INA") {
-        @Override
-        public String getStatusMessage() {
-            return "Institution is currently inactive.";
-        }
-    },
-    SUSPENDED("Under investigation", "SUS") {
-        @Override
-        public String getStatusMessage() {
-            return "Institution operations are suspended pending investigation.";
-        }
-    };
+    ACTIVE("Fully operational", "ACT"),
+    INACTIVE("Not operational", "INA"),
+    SUSPENDED("Under investigation", "SUS");
 
     private final String description;
     private final String code;
@@ -33,7 +18,9 @@ public enum InstitutionStatus {
         this.code = code;
     }
 
-    public abstract String getStatusMessage();
+    public String getStatusMessage() {
+        return description + " [" + code + "]";
+    }
 
     public boolean isOperational() {
         return this == ACTIVE;

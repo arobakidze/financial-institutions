@@ -21,7 +21,7 @@ import interfaces.Reportable;
 import interfaces.Taxable;
 import interfaces.Transferable;
 import loans.Loan;
-import records.TransactionSummary;
+import summary.TransactionSummary;
 import resources.BankingResource;
 import sector.FinancialSector;
 import services.AccountService;

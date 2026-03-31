@@ -14,7 +14,7 @@ import interfaces.Reportable;
 import lambdas.AccountValidator;
 import lambdas.InstitutionFilter;
 import lambdas.TransactionProcessor;
-import records.TransactionSummary;
+import summary.TransactionSummary;
 import transactions.Transaction;
 
 import java.math.BigDecimal;

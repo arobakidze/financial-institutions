@@ -2,30 +2,10 @@ package enums;
 
 public enum RiskLevel {
 
-    LOW("Minimal risk", 1) {
-        @Override
-        public String getRiskAdvice() {
-            return "Standard loan terms apply.";
-        }
-    },
-    MEDIUM("Moderate risk", 2) {
-        @Override
-        public String getRiskAdvice() {
-            return "Additional verification required.";
-        }
-    },
-    HIGH("Significant risk", 3) {
-        @Override
-        public String getRiskAdvice() {
-            return "Collateral required before approval.";
-        }
-    },
-    CRITICAL("Extreme risk", 4) {
-        @Override
-        public String getRiskAdvice() {
-            return "Loan application likely to be rejected.";
-        }
-    };
+    LOW("Minimal risk", 1),
+    MEDIUM("Moderate risk", 2),
+    HIGH("Significant risk", 3),
+    CRITICAL("Extreme risk", 4);
 
     private final String description;
     private final int score;
@@ -39,7 +19,12 @@ public enum RiskLevel {
         this.score = score;
     }
 
-    public abstract String getRiskAdvice();
+    public String getRiskAdvice() {
+        if (score <= 1) return "Standard loan terms apply.";
+        if (score == 2) return "Additional verification required.";
+        if (score == 3) return "Collateral required before approval.";
+        return "Loan application likely to be rejected.";
+    }
 
     public boolean isHighRisk() {
         return this == HIGH || this == CRITICAL;
@@ -54,4 +39,3 @@ public enum RiskLevel {
     }
 
 }
-

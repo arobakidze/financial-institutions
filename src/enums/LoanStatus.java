@@ -2,30 +2,10 @@ package enums;
 
 public enum LoanStatus {
 
-    PENDING("Awaiting review", 1) {
-        @Override
-        public String getStatusMessage() {
-            return "Loan application is pending review.";
-        }
-    },
-    APPROVED("Loan approved", 2) {
-        @Override
-        public String getStatusMessage() {
-            return "Loan has been approved and funds will be disbursed.";
-        }
-    },
-    REJECTED("Loan rejected", 3) {
-        @Override
-        public String getStatusMessage() {
-            return "Loan application has been rejected.";
-        }
-    },
-    CLOSED("Loan fully repaid", 4) {
-        @Override
-        public String getStatusMessage() {
-            return "Loan has been fully repaid and closed.";
-        }
-    };
+    PENDING("Awaiting review", 1),
+    APPROVED("Loan approved", 2),
+    REJECTED("Loan rejected", 3),
+    CLOSED("Loan fully repaid", 4);
 
     private final String description;
     private final int statusCode;
@@ -39,7 +19,9 @@ public enum LoanStatus {
         this.statusCode = statusCode;
     }
 
-    public abstract String getStatusMessage();
+    public String getStatusMessage() {
+        return description + " (code: " + statusCode + ")";
+    }
 
     public boolean isFinal() {
         return this == REJECTED || this == CLOSED;
