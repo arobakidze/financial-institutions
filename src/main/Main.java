@@ -15,7 +15,14 @@ import enums.RiskLevel;
 import enums.TransactionType;
 import exceptions.AuditFailedException;
 import generic.Pair;
-import institutions.*;
+import institutions.Bank;
+import institutions.Branch;
+import institutions.Employee;
+import institutions.FinancialInstitution;
+import institutions.HedgeFund;
+import institutions.InsuranceCompany;
+import institutions.InvestmentBank;
+import institutions.RetailBank;
 import interfaces.Auditable;
 import interfaces.Reportable;
 import interfaces.Taxable;
@@ -27,6 +34,7 @@ import sector.FinancialSector;
 import services.AccountService;
 import services.LoanService;
 import transactions.Transaction;
+import reflection.ReflectionUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -103,7 +111,6 @@ public class Main {
         AccountService accountService = new AccountService();
         LoanService loanService = new LoanService();
 
-
         System.out.println("\n--- Enum demos ---");
         System.out.println(institution1.getStatus().getStatusMessage());
         System.out.println(institution2.getStatus().getStatusMessage());
@@ -111,7 +118,6 @@ public class Main {
         System.out.println(((LoanAccount) loanAccount).getRiskLevel().getRiskAdvice());
         System.out.println(account.getAccountTier().getTierBenefits());
         System.out.println(TransactionType.TRANSFER.calculateFee(new BigDecimal("1000.00")));
-
 
         System.out.println("\n--- Record demo ---");
         TransactionSummary summary = accountService.buildTransactionSummary("Avtandili", transactions);
@@ -121,13 +127,9 @@ public class Main {
         System.out.println("Average: " + summary.averageAmount());
         System.out.println("Has transactions: " + summary.hasTransactions());
 
-
-
         System.out.println("\n--- Runnable ---");
         Runnable auditTask = () -> System.out.println("Running background audit for all institutions...");
         auditTask.run();
-
-
 
         System.out.println("\n--- Supplier ---");
         Supplier<String> reportHeader = () -> "=== Financial Sector Report - " + LocalDate.now() + " ===";
@@ -137,12 +139,10 @@ public class Main {
         allAccounts.add(loanAccount);
         accountService.printReport(reportHeader, allAccounts);
 
-
         System.out.println("\n--- Consumer ---");
         Consumer<Transaction> transactionPrinter = t ->
                 System.out.println("  [" + t.getTransactionType() + "] " + t.getTransactionAmount() + " on " + t.getTransactionDate());
         accountService.processTransactions(transactions, transactionPrinter);
-
 
         System.out.println("\n--- Function ---");
         Function<Account, String> accountSummaryMapper = a ->
@@ -235,6 +235,32 @@ public class Main {
             resource.process("ACC-001");
             resource.process("ACC-002");
         }
+
+        System.out.println("\n--- Reflection ---");
+        ReflectionUtil.printClassInfo(Employee.class);
+
+        try {
+            Employee reflectedEmployee = (Employee) ReflectionUtil.createObject(
+                    Employee.class,
+                    new Class[]{String.class, String.class},
+                    new Object[]{"Mariam Gelashvili", "Director"}
+            );
+            System.out.println("Created via reflection: " + reflectedEmployee.getEmployeeName() + " - " + reflectedEmployee.getPosition());
+
+            String position = (String) ReflectionUtil.invokeMethod(
+                    reflectedEmployee,
+                    "getPosition",
+                    new Class[]{},
+                    new Object[]{}
+            );
+            System.out.println("Method called via reflection - position: " + position);
+        } catch (Exception e) {
+            System.out.println("Reflection error: " + e.getMessage());
+        }
+
+        ReflectionUtil.handleBusinessMethods(LoanService.class);
+        ReflectionUtil.handleBusinessMethods(AccountService.class);
+        ReflectionUtil.handleBusinessMethods(Bank.class);
 
         System.out.println("\n" + customer1);
         System.out.println(transactions.get(0));

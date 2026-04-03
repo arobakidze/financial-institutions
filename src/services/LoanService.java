@@ -1,6 +1,7 @@
 package services;
 
 import accounts.LoanAccount;
+import annotations.BusinessMethod;
 import client.Customer;
 import institutions.FinancialInstitution;
 import interfaces.Notifiable;
@@ -12,6 +13,7 @@ public class LoanService extends BaseService implements Notifiable {
     private static final String NOTIFICATION_CHANNEL = "SMS";
 
     @Override
+    @BusinessMethod(description = "Processes loans for a given financial institution")
     public void process(FinancialInstitution institution) {
         logAction("Processing loans for: " + institution.getName());
         System.out.println("Institution type: " + institution.getInstitutionType());
@@ -27,6 +29,7 @@ public class LoanService extends BaseService implements Notifiable {
         return NOTIFICATION_CHANNEL;
     }
 
+    @BusinessMethod(description = "Approves or rejects a loan based on amount threshold")
     public void approveLoan(Customer customer, LoanAccount loanAccount) {
         if (loanAccount.getLoan().getLoanAmount().compareTo(new BigDecimal("100000")) > 0) {
             sendNotification("Loan rejected for " + customer.getCustomerName());

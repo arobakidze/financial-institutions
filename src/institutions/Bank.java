@@ -1,6 +1,7 @@
 package institutions;
 
 import accounts.Account;
+import annotations.BusinessMethod;
 import client.Address;
 import client.Customer;
 import exceptions.AuditFailedException;
@@ -10,7 +11,10 @@ import interfaces.Taxable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Bank extends FinancialInstitution implements Taxable, Auditable, Reportable {
 
@@ -27,9 +31,8 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
         this.customers = customers;
         this.employees = employees;
         this.customerAccountMap = new HashMap<>();
-        for (Customer customer : customers) {
-            customerAccountMap.put(customer, customer.getAccount());
-        }
+        // stream 9 — replacing for loop in constructor
+        customers.stream().forEach(customer -> customerAccountMap.put(customer, customer.getAccount()));
         this.lastAuditDate = LocalDate.now();
     }
 
@@ -49,6 +52,7 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
     }
 
     @Override
+    @BusinessMethod(description = "Audits the bank and verifies customer data")
     public void audit() throws AuditFailedException {
         if (customers == null || customers.isEmpty()) {
             throw new AuditFailedException("Audit failed — no customers found for bank: " + getName());
@@ -95,8 +99,8 @@ public class Bank extends FinancialInstitution implements Taxable, Auditable, Re
         return customerAccountMap;
     }
 
-    public void setCustomerAccountMap(Map<Customer, Account> customerAccountMap) {
-        this.customerAccountMap = customerAccountMap;
+    public void setCustomerAccountMap(Map<Customer, Account> map) {
+        this.customerAccountMap = map;
     }
 
 }

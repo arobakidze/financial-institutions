@@ -14,11 +14,11 @@ import interfaces.Reportable;
 import lambdas.AccountValidator;
 import lambdas.InstitutionFilter;
 import lambdas.TransactionProcessor;
+import annotations.BusinessMethod;
 import summary.TransactionSummary;
 import transactions.Transaction;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class AccountService extends BaseService implements Notifiable {
 
@@ -53,22 +54,17 @@ public class AccountService extends BaseService implements Notifiable {
         }
     }
 
+    @BusinessMethod(description = "Filters accounts based on a given predicate")
     public List<Account> filterAccounts(List<Account> accounts, Predicate<Account> predicate) {
-        List<Account> result = new ArrayList<>();
-        for (Account account : accounts) {
-            if (predicate.test(account)) {
-                result.add(account);
-            }
-        }
-        return result;
+        return accounts.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 
     public List<String> mapAccountsToStrings(List<Account> accounts, Function<Account, String> mapper) {
-        List<String> result = new ArrayList<>();
-        for (Account account : accounts) {
-            result.add(mapper.apply(account));
-        }
-        return result;
+        return accounts.stream()
+                .map(mapper)
+                .collect(Collectors.toList());
     }
 
     public void processTransactions(List<Transaction> transactions, Consumer<Transaction> consumer) {
@@ -79,9 +75,9 @@ public class AccountService extends BaseService implements Notifiable {
 
     public void printReport(Supplier<String> headerSupplier, List<Account> accounts) {
         System.out.println(headerSupplier.get());
-        for (Account account : accounts) {
-            System.out.println("  " + account.getOwner() + " — " + account.getBalance());
-        }
+        accounts.stream()
+                .map(a -> "  " + a.getOwner() + " — " + a.getBalance())
+                .forEach(System.out::println);
     }
 
     public boolean canTransfer(Account account, BigDecimal amount, BiFunction<Account, BigDecimal, Boolean> transferCheck) {
@@ -89,37 +85,43 @@ public class AccountService extends BaseService implements Notifiable {
     }
 
     public void logCustomerAccounts(List<Customer> customers, BiConsumer<Customer, Account> logger) {
-        for (Customer customer : customers) {
-            logger.accept(customer, customer.getAccount());
-        }
+        customers.stream()
+                .forEach(c -> logger.accept(c, c.getAccount()));
     }
 
+    @BusinessMethod(description = "Validates an account using a custom validator")
     public boolean validateAccount(Account account, AccountValidator validator) {
         return validator.validate(account);
     }
 
     public void applyTransactionProcessor(List<Transaction> transactions, String owner, TransactionProcessor processor) {
-        for (Transaction transaction : transactions) {
-            processor.process(transaction, owner);
-        }
+        transactions.stream()
+                .forEach(t -> processor.process(t, owner));
     }
 
     public List<FinancialInstitution> filterInstitutions(List<FinancialInstitution> institutions, InstitutionFilter filter) {
-        List<FinancialInstitution> result = new ArrayList<>();
-        for (FinancialInstitution institution : institutions) {
-            if (filter.filter(institution)) {
-                result.add(institution);
-            }
-        }
-        return result;
+        return institutions.stream()
+                .filter(i -> filter.filter(i))
+                .collect(Collectors.toList());
     }
 
     public TransactionSummary buildTransactionSummary(String owner, List<Transaction> transactions) {
-        BigDecimal total = BigDecimal.ZERO;
-        for (Transaction t : transactions) {
-            total = total.add(t.getTransactionAmount());
-        }
+        BigDecimal total = transactions.stream()
+                .map(Transaction::getTransactionAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         return new TransactionSummary(owner, total, transactions.size());
+    }
+
+    public void useRepository(List<Transaction> transactions) {
+        Repository<Transaction> repo = new Repository<>();
+        transactions.stream()
+                .filter(t -> t.getTransactionAmount().compareTo(BigDecimal.ZERO) > 0)
+                .forEach(repo::add);
+        System.out.println("Repository size: " + repo.size());
+        System.out.println("Repository empty: " + repo.isEmpty());
+        System.out.println("First transaction: " + repo.getFirst());
+        repo.remove(repo.get(0));
+        System.out.println("After remove, size: " + repo.size());
     }
 
     public void iterateCustomers(List<Customer> customers) {
@@ -152,18 +154,6 @@ public class AccountService extends BaseService implements Notifiable {
 
     public Pair<String, BigDecimal> getAccountSummaryPair(Account account) {
         return new Pair<>(account.getOwner(), account.getBalance());
-    }
-
-    public void useRepository(List<Transaction> transactions) {
-        Repository<Transaction> repo = new Repository<>();
-        for (Transaction t : transactions) {
-            repo.add(t);
-        }
-        System.out.println("Repository size: " + repo.size());
-        System.out.println("Repository empty: " + repo.isEmpty());
-        System.out.println("First transaction: " + repo.getFirst());
-        repo.remove(repo.get(0));
-        System.out.println("After remove, size: " + repo.size());
     }
 
     @Override
