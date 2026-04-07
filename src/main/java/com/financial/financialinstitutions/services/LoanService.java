@@ -1,0 +1,45 @@
+package com.financial.financialinstitutions.services;
+
+import com.financial.financialinstitutions.accounts.LoanAccount;
+import com.financial.financialinstitutions.annotations.BusinessMethod;
+import com.financial.financialinstitutions.client.Customer;
+import com.financial.financialinstitutions.institutions.FinancialInstitution;
+import com.financial.financialinstitutions.interfaces.Notifiable;
+
+import java.math.BigDecimal;
+
+public class LoanService extends BaseService implements Notifiable {
+
+    private static final String NOTIFICATION_CHANNEL = "SMS";
+
+    @Override
+    @BusinessMethod(description = "Processes loans for a given financial institution")
+    public void process(FinancialInstitution institution) {
+        logAction("Processing loans for: " + institution.getName());
+        System.out.println("Institution type: " + institution.getInstitutionType());
+    }
+
+    @Override
+    public void sendNotification(String message) {
+        System.out.println("[" + NOTIFICATION_CHANNEL + "] Notification: " + message);
+    }
+
+    @Override
+    public String getNotificationChannel() {
+        return NOTIFICATION_CHANNEL;
+    }
+
+    @BusinessMethod(description = "Approves or rejects a loan based on amount threshold")
+    public void approveLoan(Customer customer, LoanAccount loanAccount) {
+        if (loanAccount.getLoan().getLoanAmount().compareTo(new BigDecimal("100000")) > 0) {
+            sendNotification("Loan rejected for " + customer.getCustomerName());
+            System.out.println("Loan rejected for " + customer.getCustomerName() + " - amount too high.");
+        } else {
+            sendNotification("Loan approved for " + customer.getCustomerName());
+            System.out.println("Loan approved for " + customer.getCustomerName() + "!");
+            System.out.println("Amount: " + loanAccount.getLoan().getLoanAmount());
+            System.out.println("Sending confirmation email to " + customer.getCustomerEmail());
+        }
+    }
+
+}
