@@ -1,16 +1,21 @@
 package com.financial.financialinstitutions.enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum InstitutionStatus {
 
     ACTIVE("Fully operational", "ACT"),
     INACTIVE("Not operational", "INA"),
     SUSPENDED("Under investigation", "SUS");
 
+    private static final Logger LOGGER = LogManager.getLogger(InstitutionStatus.class);
+
     private final String description;
     private final String code;
 
     static {
-        System.out.println("InstitutionStatus enum loaded.");
+        LOGGER.info("InstitutionStatus enum loaded.");
     }
 
     InstitutionStatus(String description, String code) {

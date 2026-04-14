@@ -1,5 +1,8 @@
 package com.financial.financialinstitutions.enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum LoanStatus {
 
     PENDING("Awaiting review", 1),
@@ -7,11 +10,13 @@ public enum LoanStatus {
     REJECTED("Loan rejected", 3),
     CLOSED("Loan fully repaid", 4);
 
+    private static final Logger LOGGER = LogManager.getLogger(LoanStatus.class);
+
     private final String description;
     private final int statusCode;
 
     static {
-        System.out.println("LoanStatus enum loaded.");
+        LOGGER.info("LoanStatus enum loaded.");
     }
 
     LoanStatus(String description, int statusCode) {

@@ -1,0 +1,130 @@
+2026-04-14 13:53:30 INFO  TransactionType - TransactionType enum loaded.
+2026-04-14 13:53:30 INFO  LoanStatus - LoanStatus enum loaded.
+2026-04-14 13:53:30 INFO  AccountTier - AccountTier enum loaded.
+2026-04-14 13:53:30 INFO  RiskLevel - RiskLevel enum loaded.
+2026-04-14 13:53:30 INFO  InstitutionStatus - InstitutionStatus enum loaded.
+2026-04-14 13:53:30 INFO  Main - Total institutions created: 5
+2026-04-14 13:53:30 INFO  TextFileService - Text file book.txt was processed successfully
+2026-04-14 13:53:30 INFO  TextFileService - Unique words count: 0
+2026-04-14 13:53:30 INFO  TextFileService - Result was written to unique_words.txt
+2026-04-14 13:53:30 INFO  Main - 
+--- Enum demos ---
+2026-04-14 13:53:30 INFO  Main - Fully operational [ACT]
+2026-04-14 13:53:30 INFO  Main - Not operational [INA]
+2026-04-14 13:53:30 INFO  Main - Loan approved (code: 2)
+2026-04-14 13:53:30 INFO  Main - Additional verification required.
+2026-04-14 13:53:30 INFO  Main - Free transfers, priority support.
+2026-04-14 13:53:30 INFO  Main - 10.0000
+2026-04-14 13:53:30 INFO  Main - 
+--- Record demo ---
+2026-04-14 13:53:30 INFO  Main - Owner: Avtandili
+2026-04-14 13:53:30 INFO  Main - Total: 450.00
+2026-04-14 13:53:30 INFO  Main - Count: 2
+2026-04-14 13:53:30 INFO  Main - Average: 225.00
+2026-04-14 13:53:30 INFO  Main - Has transactions: true
+2026-04-14 13:53:30 INFO  Main - 
+--- Runnable ---
+2026-04-14 13:53:30 INFO  Main - Running background audit for all institutions...
+2026-04-14 13:53:30 INFO  Main - 
+--- Supplier ---
+2026-04-14 13:53:30 INFO  AccountService - === Financial Sector Report - 2026-04-14 ===
+2026-04-14 13:53:30 INFO  AccountService -   Avtandili — 2000.00
+2026-04-14 13:53:30 INFO  AccountService -   Elene — 8000.00
+2026-04-14 13:53:30 INFO  AccountService -   Luka — 0.00
+2026-04-14 13:53:30 INFO  Main - 
+--- Consumer ---
+2026-04-14 13:53:30 INFO  Main -   [DEPOSIT] 300.00 on 2025-03-10
+2026-04-14 13:53:30 INFO  Main -   [WITHDRAWAL] 150.00 on 2025-03-11
+2026-04-14 13:53:30 INFO  Main - 
+--- Function ---
+2026-04-14 13:53:30 INFO  Main -   Avtandili | Savings Account | Balance: 2000.00 | Tier: PREMIUM
+2026-04-14 13:53:30 INFO  Main -   Elene | Savings Account | Balance: 8000.00 | Tier: ELITE
+2026-04-14 13:53:30 INFO  Main -   Luka | Loan Account | Balance: 0.00 | Tier: BASIC
+2026-04-14 13:53:30 INFO  Main - 
+--- Predicate ---
+2026-04-14 13:53:30 INFO  Main - Accounts with balance > 1000: 2
+2026-04-14 13:53:30 INFO  Main -   Avtandili — 2000.00
+2026-04-14 13:53:30 INFO  Main -   Elene — 8000.00
+2026-04-14 13:53:30 INFO  Main - 
+--- BiFunction ---
+2026-04-14 13:53:30 INFO  Main - Can Avtandili transfer 500? true
+2026-04-14 13:53:30 INFO  Main - 
+--- BiConsumer ---
+2026-04-14 13:53:30 INFO  Main -   Avtandili Robakidze owns a Savings Account with balance 2000.00
+2026-04-14 13:53:30 INFO  Main -   Elene Maisuradze owns a Savings Account with balance 8000.00
+2026-04-14 13:53:30 INFO  Main -   Luka Beridze owns a Loan Account with balance 0.00
+2026-04-14 13:53:30 INFO  Main - 
+--- Custom AccountValidator lambda ---
+2026-04-14 13:53:30 INFO  Main - Account valid: true
+2026-04-14 13:53:30 INFO  Main - 
+--- Custom TransactionProcessor lambda ---
+2026-04-14 13:53:30 INFO  Main -   Processing DEPOSIT of 300.00 for Avtandili. Fee: 0.000
+2026-04-14 13:53:30 INFO  Main -   Processing WITHDRAWAL of 150.00 for Avtandili. Fee: 0.75000
+2026-04-14 13:53:30 INFO  Main - 
+--- Custom InstitutionFilter lambda ---
+2026-04-14 13:53:30 INFO  Main - Active institutions: 4
+2026-04-14 13:53:30 INFO  Main -   TBC Bank
+2026-04-14 13:53:30 INFO  Main -   GPI Holding
+2026-04-14 13:53:30 INFO  Main -   Bank of Georgia
+2026-04-14 13:53:30 INFO  Main -   Liberty Bank
+2026-04-14 13:53:30 INFO  Main - 
+--- Collections ---
+2026-04-14 13:53:30 INFO  AccountService - --- Iterating customers list ---
+2026-04-14 13:53:30 INFO  AccountService - Customer: Avtandili Robakidze
+2026-04-14 13:53:30 INFO  AccountService - Customer: Elene Maisuradze
+2026-04-14 13:53:30 INFO  AccountService - Customer: Luka Beridze
+2026-04-14 13:53:30 INFO  AccountService - Total customers: 3
+2026-04-14 13:53:30 INFO  AccountService - First customer: Avtandili Robakidze
+2026-04-14 13:53:30 INFO  AccountService - --- Iterating employees set ---
+2026-04-14 13:53:30 INFO  AccountService - Employee: Giorgi Kiknadze - Manager
+2026-04-14 13:53:30 INFO  AccountService - Employee: Nino Tsiklauri - Accountant
+2026-04-14 13:53:30 INFO  AccountService - Total employees: 2
+2026-04-14 13:53:30 INFO  AccountService - First employee: Giorgi Kiknadze
+2026-04-14 13:53:30 INFO  AccountService - --- Iterating customer-account map ---
+2026-04-14 13:53:30 INFO  AccountService - Customer: Avtandili Robakidze → Account: Savings Account
+2026-04-14 13:53:30 INFO  AccountService - Customer: Elene Maisuradze → Account: Savings Account
+2026-04-14 13:53:30 INFO  AccountService - Customer: Luka Beridze → Account: Loan Account
+2026-04-14 13:53:30 INFO  AccountService - Map size: 3
+2026-04-14 13:53:30 INFO  AccountService - First map entry: Avtandili Robakidze → Savings Account
+2026-04-14 13:53:30 INFO  AccountService - Repository size: 2
+2026-04-14 13:53:30 INFO  AccountService - Repository empty: false
+2026-04-14 13:53:30 INFO  AccountService - First transaction: Transaction{amount=300.00, type=DEPOSIT, date=2025-03-10}
+2026-04-14 13:53:30 INFO  AccountService - After remove, size: 1
+2026-04-14 13:53:30 INFO  Main - Account summary pair: Pair{key=Avtandili, value=2000.00}
+2026-04-14 13:53:30 INFO  Main - 
+--- Interfaces ---
+2026-04-14 13:53:30 INFO  Main - TBC Bank tax: 100000.0000
+2026-04-14 13:53:30 INFO  Main - Basis Bank tax: 3000000.0000
+2026-04-14 13:53:30 INFO  Main - Bank Report: TBC Bank | Customers: 3 | Tax: 100000.0000
+2026-04-14 13:53:30 INFO  Main - Financial Sector Report | Total Institutions: 5
+2026-04-14 13:53:30 INFO  Main - 
+--- Audit ---
+2026-04-14 13:53:30 INFO  Main - Audit process completed for: TBC Bank
+2026-04-14 13:53:30 INFO  AccountService - Institution type: Bank
+2026-04-14 13:53:30 INFO  AccountService - Bank Report: TBC Bank | Customers: 3 | Tax: 100000.0000
+2026-04-14 13:53:30 INFO  AccountService - Audit process completed for: TBC Bank
+2026-04-14 13:53:30 INFO  AccountService - Institution type: Hedge Fund
+2026-04-14 13:53:30 INFO  AccountService - Hedge Fund Report: Basis Bank | Total Assets: 12000000.00 | Tax: 3000000.0000
+2026-04-14 13:53:30 INFO  AccountService - Institution type: Insurance Company
+2026-04-14 13:53:30 INFO  AccountService - [EMAIL] Notification: Welcome to TBC Bank!
+2026-04-14 13:53:30 INFO  AccountService - Transaction valid: 300.00
+2026-04-14 13:53:30 INFO  AccountService - Account type: Savings Account
+2026-04-14 13:53:30 INFO  AccountService - Owner: Avtandili
+2026-04-14 13:53:30 INFO  AccountService - Balance: 2000.00
+2026-04-14 13:53:30 INFO  AccountService - Account type: Savings Account
+2026-04-14 13:53:30 INFO  AccountService - Owner: Elene
+2026-04-14 13:53:30 INFO  AccountService - Balance: 8000.00
+2026-04-14 13:53:30 INFO  AccountService - Account type: Loan Account
+2026-04-14 13:53:30 INFO  AccountService - Owner: Luka
+2026-04-14 13:53:30 INFO  AccountService - Balance: 0.00
+2026-04-14 13:53:30 INFO  Main - 
+--- Reflection ---
+2026-04-14 13:53:30 INFO  Main - Created via reflection: Mariam Gelashvili - Director
+2026-04-14 13:53:30 INFO  Main - Method called via reflection - position: Director
+2026-04-14 13:53:30 INFO  Main - 
+Customer{name='Avtandili Robakidze', email='avtandili@gmail.com'}
+2026-04-14 13:53:30 INFO  Main - Transaction{amount=300.00, type=DEPOSIT, date=2025-03-10}
+2026-04-14 13:53:30 INFO  Main - Account{owner='Avtandili', balance=2000.00, type='Savings Account', tier=PREMIUM}
+2026-04-14 13:53:30 INFO  Main - Sector type: Financial Sector
+2026-04-14 13:53:30 INFO  Main - Contact phone: +995599123456
+2026-04-14 13:53:30 INFO  Main - Total institutions created: 5

@@ -1,5 +1,8 @@
 package com.financial.financialinstitutions.enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 
 public enum TransactionType {
@@ -23,11 +26,13 @@ public enum TransactionType {
         }
     };
 
+    private static final Logger LOGGER = LogManager.getLogger(TransactionType.class);
+
     private final String description;
     private final double feePercentage;
 
     static {
-        System.out.println("TransactionType enum loaded.");
+        LOGGER.info("TransactionType enum loaded.");
     }
 
     TransactionType(String description, double feePercentage) {

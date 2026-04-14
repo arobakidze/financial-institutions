@@ -1,5 +1,6 @@
 package com.financial.financialinstitutions.main;
 
+import com.financial.financialinstitutions.services.TextFileService;
 import com.financial.financialinstitutions.accounts.Card;
 import com.financial.financialinstitutions.accounts.LoanAccount;
 import com.financial.financialinstitutions.accounts.SavingsAccount;
@@ -35,6 +36,8 @@ import com.financial.financialinstitutions.services.AccountService;
 import com.financial.financialinstitutions.services.LoanService;
 import com.financial.financialinstitutions.transactions.Transaction;
 import com.financial.financialinstitutions.reflection.ReflectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -42,6 +45,8 @@ import java.util.*;
 import java.util.function.*;
 
 public class Main {
+
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
 
@@ -111,27 +116,31 @@ public class Main {
         AccountService accountService = new AccountService();
         LoanService loanService = new LoanService();
 
-        System.out.println("\n--- Enum demos ---");
-        System.out.println(institution1.getStatus().getStatusMessage());
-        System.out.println(institution2.getStatus().getStatusMessage());
-        System.out.println(loan.getLoanStatus().getStatusMessage());
-        System.out.println(((LoanAccount) loanAccount).getRiskLevel().getRiskAdvice());
-        System.out.println(account.getAccountTier().getTierBenefits());
-        System.out.println(TransactionType.TRANSFER.calculateFee(new BigDecimal("1000.00")));
+        TextFileService textFileService = new TextFileService();
+        LOGGER.info("Total institutions created: {}", FinancialInstitution.getTotalInstitutions());
+        textFileService.countUniqueWords("book.txt", "unique_words.txt");
 
-        System.out.println("\n--- Record demo ---");
+        LOGGER.info("\n--- Enum demos ---");
+        LOGGER.info("{}", institution1.getStatus().getStatusMessage());
+        LOGGER.info("{}", institution2.getStatus().getStatusMessage());
+        LOGGER.info("{}", loan.getLoanStatus().getStatusMessage());
+        LOGGER.info("{}", ((LoanAccount) loanAccount).getRiskLevel().getRiskAdvice());
+        LOGGER.info("{}", account.getAccountTier().getTierBenefits());
+        LOGGER.info("{}", TransactionType.TRANSFER.calculateFee(new BigDecimal("1000.00")));
+
+        LOGGER.info("\n--- Record demo ---");
         TransactionSummary summary = accountService.buildTransactionSummary("Avtandili", transactions);
-        System.out.println("Owner: " + summary.owner());
-        System.out.println("Total: " + summary.totalAmount());
-        System.out.println("Count: " + summary.transactionCount());
-        System.out.println("Average: " + summary.averageAmount());
-        System.out.println("Has transactions: " + summary.hasTransactions());
+        LOGGER.info("Owner: {}", summary.owner());
+        LOGGER.info("Total: {}", summary.totalAmount());
+        LOGGER.info("Count: {}", summary.transactionCount());
+        LOGGER.info("Average: {}", summary.averageAmount());
+        LOGGER.info("Has transactions: {}", summary.hasTransactions());
 
-        System.out.println("\n--- Runnable ---");
-        Runnable auditTask = () -> System.out.println("Running background audit for all institutions...");
+        LOGGER.info("\n--- Runnable ---");
+        Runnable auditTask = () -> LOGGER.info("Running background audit for all institutions...");
         auditTask.run();
 
-        System.out.println("\n--- Supplier ---");
+        LOGGER.info("\n--- Supplier ---");
         Supplier<String> reportHeader = () -> "=== Financial Sector Report - " + LocalDate.now() + " ===";
         List<Account> allAccounts = new ArrayList<>();
         allAccounts.add(account);
@@ -139,81 +148,81 @@ public class Main {
         allAccounts.add(loanAccount);
         accountService.printReport(reportHeader, allAccounts);
 
-        System.out.println("\n--- Consumer ---");
+        LOGGER.info("\n--- Consumer ---");
         Consumer<Transaction> transactionPrinter = t ->
-                System.out.println("  [" + t.getTransactionType() + "] " + t.getTransactionAmount() + " on " + t.getTransactionDate());
+                LOGGER.info("  [{}] {} on {}", t.getTransactionType(), t.getTransactionAmount(), t.getTransactionDate());
         accountService.processTransactions(transactions, transactionPrinter);
 
-        System.out.println("\n--- Function ---");
+        LOGGER.info("\n--- Function ---");
         Function<Account, String> accountSummaryMapper = a ->
                 a.getOwner() + " | " + a.getAccountType() + " | Balance: " + a.getBalance() + " | Tier: " + a.getAccountTier();
         List<String> summaries = accountService.mapAccountsToStrings(allAccounts, accountSummaryMapper);
-        summaries.forEach(s -> System.out.println("  " + s));
+        summaries.forEach(s -> LOGGER.info("  {}", s));
 
-        System.out.println("\n--- Predicate ---");
+        LOGGER.info("\n--- Predicate ---");
         Predicate<Account> hasEnoughBalance = a -> a.getBalance().compareTo(new BigDecimal("1000.00")) > 0;
         List<Account> richAccounts = accountService.filterAccounts(allAccounts, hasEnoughBalance);
-        System.out.println("Accounts with balance > 1000: " + richAccounts.size());
+        LOGGER.info("Accounts with balance > 1000: {}", richAccounts.size());
         for (Account a : richAccounts) {
-            System.out.println("  " + a.getOwner() + " — " + a.getBalance());
+            LOGGER.info("  {} — {}", a.getOwner(), a.getBalance());
         }
 
-        System.out.println("\n--- BiFunction ---");
+        LOGGER.info("\n--- BiFunction ---");
         BiFunction<Account, BigDecimal, Boolean> transferFeasibility =
                 (a, amount) -> a.getBalance().compareTo(amount) >= 0;
         boolean canTransfer = accountService.canTransfer(account, new BigDecimal("500.00"), transferFeasibility);
-        System.out.println("Can Avtandili transfer 500? " + canTransfer);
+        LOGGER.info("Can Avtandili transfer 500? {}", canTransfer);
 
-        System.out.println("\n--- BiConsumer ---");
+        LOGGER.info("\n--- BiConsumer ---");
         BiConsumer<Customer, Account> customerAccountLogger =
-                (c, a) -> System.out.println("  " + c.getCustomerName() + " owns a " + a.getAccountType() + " with balance " + a.getBalance());
+                (c, a) -> LOGGER.info("  {} owns a {} with balance {}", c.getCustomerName(), a.getAccountType(), a.getBalance());
         accountService.logCustomerAccounts(customers, customerAccountLogger);
 
-        System.out.println("\n--- Custom AccountValidator lambda ---");
+        LOGGER.info("\n--- Custom AccountValidator lambda ---");
         boolean isValid = accountService.validateAccount(account,
                 a -> a.getBalance().compareTo(BigDecimal.ZERO) > 0 && a.getOwner() != null);
-        System.out.println("Account valid: " + isValid);
+        LOGGER.info("Account valid: {}", isValid);
 
-        System.out.println("\n--- Custom TransactionProcessor lambda ---");
+        LOGGER.info("\n--- Custom TransactionProcessor lambda ---");
         accountService.applyTransactionProcessor(transactions, "Avtandili",
-                (t, owner) -> System.out.println("  Processing " + t.getTransactionType() + " of " + t.getTransactionAmount() + " for " + owner + ". Fee: " + t.getTransactionType().calculateFee(t.getTransactionAmount())));
+                (t, owner) -> LOGGER.info("  Processing {} of {} for {}. Fee: {}", t.getTransactionType(), t.getTransactionAmount(), owner, t.getTransactionType().calculateFee(t.getTransactionAmount())));
 
-        System.out.println("\n--- Custom InstitutionFilter lambda ---");
+        LOGGER.info("\n--- Custom InstitutionFilter lambda ---");
         List<FinancialInstitution> allInstitutions = new ArrayList<>(institutionMap.values());
         List<FinancialInstitution> activeInstitutions = accountService.filterInstitutions(allInstitutions,
                 i -> i.getStatus() == InstitutionStatus.ACTIVE);
-        System.out.println("Active institutions: " + activeInstitutions.size());
+        LOGGER.info("Active institutions: {}", activeInstitutions.size());
         for (FinancialInstitution inst : activeInstitutions) {
-            System.out.println("  " + inst.getName());
+            LOGGER.info("  {}", inst.getName());
         }
 
-        System.out.println("\n--- Collections ---");
+        LOGGER.info("\n--- Collections ---");
         accountService.iterateCustomers(customers);
         accountService.iterateEmployees(((Bank) institution1).getEmployees());
         accountService.iterateCustomerAccounts(((Bank) institution1).getCustomerAccountMap());
         accountService.useRepository(transactions);
 
         Pair<String, BigDecimal> pair = accountService.getAccountSummaryPair(account);
-        System.out.println("Account summary pair: " + pair);
+        LOGGER.info("Account summary pair: {}", pair);
 
-        System.out.println("\n--- Interfaces ---");
+        LOGGER.info("\n--- Interfaces ---");
         Taxable taxable1 = (Taxable) institution1;
         Taxable taxable2 = (Taxable) institution2;
-        System.out.println("TBC Bank tax: " + taxable1.calculateTax());
-        System.out.println("Basis Bank tax: " + taxable2.calculateTax());
+        LOGGER.info("TBC Bank tax: {}", taxable1.calculateTax());
+        LOGGER.info("Basis Bank tax: {}", taxable2.calculateTax());
 
         Reportable reportable1 = (Reportable) institution1;
-        System.out.println(reportable1.generateReport());
-        System.out.println(sector.generateReport());
+        LOGGER.info("{}", reportable1.generateReport());
+        LOGGER.info("{}", sector.generateReport());
 
-        System.out.println("\n--- Audit ---");
+        LOGGER.info("\n--- Audit ---");
         Auditable auditable1 = (Auditable) institution1;
         try {
             auditable1.audit();
         } catch (AuditFailedException e) {
-            System.out.println("Audit error: " + e.getMessage());
+            LOGGER.error("Audit error: {}", e.getMessage());
         } finally {
-            System.out.println("Audit process completed for: " + institution1.getName());
+            LOGGER.info("Audit process completed for: {}", institution1.getName());
         }
 
         Transferable transferable = (Transferable) account;
@@ -236,7 +245,7 @@ public class Main {
             resource.process("ACC-002");
         }
 
-        System.out.println("\n--- Reflection ---");
+        LOGGER.info("\n--- Reflection ---");
         ReflectionUtil.printClassInfo(Employee.class);
 
         try {
@@ -245,7 +254,7 @@ public class Main {
                     new Class[]{String.class, String.class},
                     new Object[]{"Mariam Gelashvili", "Director"}
             );
-            System.out.println("Created via reflection: " + reflectedEmployee.getEmployeeName() + " - " + reflectedEmployee.getPosition());
+            LOGGER.info("Created via reflection: {} - {}", reflectedEmployee.getEmployeeName(), reflectedEmployee.getPosition());
 
             String position = (String) ReflectionUtil.invokeMethod(
                     reflectedEmployee,
@@ -253,22 +262,22 @@ public class Main {
                     new Class[]{},
                     new Object[]{}
             );
-            System.out.println("Method called via reflection - position: " + position);
+            LOGGER.info("Method called via reflection - position: {}", position);
         } catch (Exception e) {
-            System.out.println("Reflection error: " + e.getMessage());
+            LOGGER.error("Reflection error: {}", e.getMessage());
         }
 
         ReflectionUtil.handleBusinessMethods(LoanService.class);
         ReflectionUtil.handleBusinessMethods(AccountService.class);
         ReflectionUtil.handleBusinessMethods(Bank.class);
 
-        System.out.println("\n" + customer1);
-        System.out.println(transactions.get(0));
-        System.out.println(account);
+        LOGGER.info("\n{}", customer1);
+        LOGGER.info("{}", transactions.get(0));
+        LOGGER.info("{}", account);
 
-        System.out.println("Sector type: " + sector.getGroupType());
-        System.out.println("Contact phone: " + contactInfo.getPhoneNumber());
-        System.out.println("Total institutions created: " + FinancialInstitution.getTotalInstitutions());
+        LOGGER.info("Sector type: {}", sector.getGroupType());
+        LOGGER.info("Contact phone: {}", contactInfo.getPhoneNumber());
+        LOGGER.info("Total institutions created: {}", FinancialInstitution.getTotalInstitutions());
 
     }
 

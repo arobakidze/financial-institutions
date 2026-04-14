@@ -1,5 +1,8 @@
 package com.financial.financialinstitutions.enums;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public enum RiskLevel {
 
     LOW("Minimal risk", 1),
@@ -7,11 +10,13 @@ public enum RiskLevel {
     HIGH("Significant risk", 3),
     CRITICAL("Extreme risk", 4);
 
+    private static final Logger LOGGER = LogManager.getLogger(RiskLevel.class);
+
     private final String description;
     private final int score;
 
     static {
-        System.out.println("RiskLevel enum loaded.");
+        LOGGER.info("RiskLevel enum loaded.");
     }
 
     RiskLevel(String description, int score) {
