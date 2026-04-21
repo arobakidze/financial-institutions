@@ -3,3 +3,4 @@ out/
 *.iml 
 target/
 logs/
+unique_words.txt

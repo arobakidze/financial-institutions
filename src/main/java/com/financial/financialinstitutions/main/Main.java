@@ -1,5 +1,14 @@
 package com.financial.financialinstitutions.main;
 
+import com.financial.financialinstitutions.connection.Connection;
+import com.financial.financialinstitutions.connection.ConnectionPool;
+import com.financial.financialinstitutions.threads.CompletableFutureDemo;
+import com.financial.financialinstitutions.threads.ThreadDemo;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.financial.financialinstitutions.services.TextFileService;
 import com.financial.financialinstitutions.accounts.Card;
 import com.financial.financialinstitutions.accounts.LoanAccount;
@@ -270,6 +279,57 @@ public class Main {
         ReflectionUtil.handleBusinessMethods(LoanService.class);
         ReflectionUtil.handleBusinessMethods(AccountService.class);
         ReflectionUtil.handleBusinessMethods(Bank.class);
+
+        LOGGER.info("--- Connection Pool + Threads ---");
+
+        ConnectionPool connectionPool = ConnectionPool.getInstance(5);
+
+        Thread runnableThread = new Thread(ThreadDemo.createRunnableThread(), "RunnableThread");
+        runnableThread.start();
+
+        ThreadDemo.CustomThread customThread = new ThreadDemo.CustomThread("CustomThread");
+        customThread.start();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(7);
+
+        for (int i = 1; i <= 7; i++) {
+            final int threadNum = i;
+            executorService.submit(() -> {
+                Connection conn = null;
+                try {
+                    LOGGER.info("Worker-{} requesting connection...", threadNum);
+                    conn = connectionPool.getConnection();
+                    conn.create("Data from Worker-" + threadNum);
+                    conn.get(threadNum);
+                    conn.update(threadNum, "Updated by Worker-" + threadNum);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOGGER.error("Worker-{} interrupted", threadNum);
+                } finally {
+                    if (conn != null) {
+                        connectionPool.releaseConnection(conn);
+                    }
+                }
+            });
+        }
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOGGER.error("ExecutorService interrupted: {}", e.getMessage());
+        }
+
+        try {
+            runnableThread.join();
+            customThread.join();
+        } catch (InterruptedException e) {
+            LOGGER.error("Thread join interrupted: {}", e.getMessage());
+        }
+
+        LOGGER.info("--- CompletableFutures ---");
+        CompletableFutureDemo.runAll();
 
         LOGGER.info("\n{}", customer1);
         LOGGER.info("{}", transactions.get(0));
