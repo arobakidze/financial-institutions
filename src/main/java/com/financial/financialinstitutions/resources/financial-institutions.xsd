@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="financialSector" type="FinancialSectorType"/>
+
+    <xs:complexType name="FinancialSectorType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="banks" type="BanksType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BanksType">
+        <xs:sequence>
+            <xs:element name="bank" type="BankType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BankType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="registrationNumber" type="xs:string"/>
+            <xs:element name="bankCode" type="xs:string"/>
+            <xs:element name="active" type="xs:boolean"/>
+            <xs:element name="totalAssets" type="xs:decimal"/>
+            <xs:element name="establishedDate" type="xs:dateTime"/>
+            <xs:element name="customers" type="CustomersType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CustomersType">
+        <xs:sequence>
+            <xs:element name="customer" type="CustomerType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CustomerType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="verified" type="xs:boolean"/>
+            <xs:element name="age" type="xs:integer"/>
+            <xs:element name="registeredAt" type="xs:dateTime"/>
+            <xs:element name="account" type="AccountType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AccountType">
+        <xs:sequence>
+            <xs:element name="owner" type="xs:string"/>
+            <xs:element name="balance" type="xs:decimal"/>
+            <xs:element name="accountType" type="xs:string"/>
+            <xs:element name="active" type="xs:boolean"/>
+            <xs:element name="transactions" type="TransactionsType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TransactionsType">
+        <xs:sequence>
+            <xs:element name="transaction" type="TransactionType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TransactionType">
+        <xs:sequence>
+            <xs:element name="amount" type="xs:decimal"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="successful" type="xs:boolean"/>
+            <xs:element name="transactionDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

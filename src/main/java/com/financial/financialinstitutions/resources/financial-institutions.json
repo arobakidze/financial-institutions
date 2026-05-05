@@ -1,0 +1,94 @@
+{
+  "name": "Georgian Financial Sector",
+  "banks": [
+    {
+      "name": "TBC Bank",
+      "registrationNumber": "REG001",
+      "bankCode": "TBC001",
+      "active": true,
+      "totalAssets": 15000000,
+      "establishedDate": "2024-01-15T09:00:00",
+      "customers": [
+        {
+          "name": "Avtandili Robakidze",
+          "email": "avtandili@gmail.com",
+          "verified": true,
+          "age": 30,
+          "registeredAt": "2024-03-01T10:30:00",
+          "account": {
+            "owner": "Avtandili",
+            "balance": 2000.00,
+            "accountType": "Savings Account",
+            "active": true,
+            "transactions": [
+              {
+                "amount": 300.00,
+                "type": "DEPOSIT",
+                "successful": true,
+                "transactionDate": "2025-03-10T14:00:00"
+              },
+              {
+                "amount": 150.00,
+                "type": "WITHDRAWAL",
+                "successful": true,
+                "transactionDate": "2025-03-11T09:30:00"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Elene Maisuradze",
+          "email": "elene@gmail.com",
+          "verified": false,
+          "age": 25,
+          "registeredAt": "2024-05-10T08:00:00",
+          "account": {
+            "owner": "Elene",
+            "balance": 8000.00,
+            "accountType": "Savings Account",
+            "active": true,
+            "transactions": [
+              {
+                "amount": 500.00,
+                "type": "DEPOSIT",
+                "successful": true,
+                "transactionDate": "2025-04-01T11:00:00"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bank of Georgia",
+      "registrationNumber": "REG004",
+      "bankCode": "BOG001",
+      "active": true,
+      "totalAssets": 20000000,
+      "establishedDate": "2023-06-01T08:00:00",
+      "customers": [
+        {
+          "name": "Luka Beridze",
+          "email": "luka@gmail.com",
+          "verified": true,
+          "age": 35,
+          "registeredAt": "2024-07-20T12:00:00",
+          "account": {
+            "owner": "Luka",
+            "balance": 0.00,
+            "accountType": "Loan Account",
+            "active": true,
+            "transactions": [
+              {
+                "amount": 15000.00,
+                "type": "TRANSFER",
+                "successful": true,
+                "transactionDate": "2025-01-01T10:00:00"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<financialSector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="financial-institutions.xsd">
+    <name>Georgian Financial Sector</name>
+    <banks>
+        <bank>
+            <name>TBC Bank</name>
+            <registrationNumber>REG001</registrationNumber>
+            <bankCode>TBC001</bankCode>
+            <active>true</active>
+            <totalAssets>15000000</totalAssets>
+            <establishedDate>2024-01-15T09:00:00</establishedDate>
+            <customers>
+                <customer>
+                    <name>Avtandili Robakidze</name>
+                    <email>avtandili@gmail.com</email>
+                    <verified>true</verified>
+                    <age>30</age>
+                    <registeredAt>2024-03-01T10:30:00</registeredAt>
+                    <account>
+                        <owner>Avtandili</owner>
+                        <balance>2000.00</balance>
+                        <accountType>Savings Account</accountType>
+                        <active>true</active>
+                        <transactions>
+                            <transaction>
+                                <amount>300.00</amount>
+                                <type>DEPOSIT</type>
+                                <successful>true</successful>
+                                <transactionDate>2025-03-10T14:00:00</transactionDate>
+                            </transaction>
+                            <transaction>
+                                <amount>150.00</amount>
+                                <type>WITHDRAWAL</type>
+                                <successful>true</successful>
+                                <transactionDate>2025-03-11T09:30:00</transactionDate>
+                            </transaction>
+                        </transactions>
+                    </account>
+                </customer>
+                <customer>
+                    <name>Elene Maisuradze</name>
+                    <email>elene@gmail.com</email>
+                    <verified>false</verified>
+                    <age>25</age>
+                    <registeredAt>2024-05-10T08:00:00</registeredAt>
+                    <account>
+                        <owner>Elene</owner>
+                        <balance>8000.00</balance>
+                        <accountType>Savings Account</accountType>
+                        <active>true</active>
+                        <transactions>
+                            <transaction>
+                                <amount>500.00</amount>
+                                <type>DEPOSIT</type>
+                                <successful>true</successful>
+                                <transactionDate>2025-04-01T11:00:00</transactionDate>
+                            </transaction>
+                        </transactions>
+                    </account>
+                </customer>
+            </customers>
+        </bank>
+        <bank>
+            <name>Bank of Georgia</name>
+            <registrationNumber>REG004</registrationNumber>
+            <bankCode>BOG001</bankCode>
+            <active>true</active>
+            <totalAssets>20000000</totalAssets>
+            <establishedDate>2023-06-01T08:00:00</establishedDate>
+            <customers>
+                <customer>
+                    <name>Luka Beridze</name>
+                    <email>luka@gmail.com</email>
+                    <verified>true</verified>
+                    <age>35</age>
+                    <registeredAt>2024-07-20T12:00:00</registeredAt>
+                    <account>
+                        <owner>Luka</owner>
+                        <balance>0.00</balance>
+                        <accountType>Loan Account</accountType>
+                        <active>true</active>
+                        <transactions>
+                            <transaction>
+                                <amount>15000.00</amount>
+                                <type>TRANSFER</type>
+                                <successful>true</successful>
+                                <transactionDate>2025-01-01T10:00:00</transactionDate>
+                            </transaction>
+                        </transactions>
+                    </account>
+                </customer>
+            </customers>
+        </bank>
+    </banks>
+</financialSector>

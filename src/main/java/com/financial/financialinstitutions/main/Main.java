@@ -47,6 +47,10 @@ import com.financial.financialinstitutions.transactions.Transaction;
 import com.financial.financialinstitutions.reflection.ReflectionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.financial.financialinstitutions.parser.JacksonParser;
+import com.financial.financialinstitutions.parser.JaxbParser;
+import com.financial.financialinstitutions.parser.Parser;
+import com.financial.financialinstitutions.parser.SaxParser;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -330,6 +334,18 @@ public class Main {
 
         LOGGER.info("--- CompletableFutures ---");
         CompletableFutureDemo.runAll();
+
+        LOGGER.info("\n--- SAX Parser ---");
+        Parser saxParser = new SaxParser();
+        saxParser.parse("src/main/resources/financial-institutions.xml");
+
+        LOGGER.info("\n--- JAXB Parser ---");
+        Parser jaxbParser = new JaxbParser();
+        jaxbParser.parse("src/main/resources/financial-institutions.xml");
+
+        LOGGER.info("\n--- Jackson Parser ---");
+        Parser jacksonParser = new JacksonParser();
+        jacksonParser.parse("src/main/resources/financial-institutions.json");
 
         LOGGER.info("\n{}", customer1);
         LOGGER.info("{}", transactions.get(0));
